@@ -1,0 +1,9 @@
+class ApiUrl {
+  static const baseUrl = 'http://127.0.0.1:3000/api';
+
+  static const register = '/auth/register';
+
+  static const refresh = '/auth/refresh';
+
+  static const login = '/auth/login';
+}
