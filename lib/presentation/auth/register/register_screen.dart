@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:riverpod_test/data/auth/model/user_model.dart';
 import 'package:riverpod_test/main.dart' show appnavigator;
+import 'package:riverpod_test/presentation/auth/login/login_screen.dart';
 import 'package:riverpod_test/presentation/auth/register/state/register_provider.dart';
 import 'package:riverpod_test/presentation/home/home_screen.dart';
 import 'package:riverpod_test/theme/app_text_style.dart';
@@ -79,7 +80,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                         key: key,
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 30),
+                              horizontal: 20, vertical: 70),
                           child: Column(
                             children: [
                               textfield(_name, 'Name', 'User-name'),
@@ -108,7 +109,28 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                                   child: Text(
                                     'Sign up',
                                     style: 13.sp(),
-                                  ))
+                                  )),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  appnavigator.push(LoginScreen());
+                                },
+                                child: RichText(
+                                    text: TextSpan(children: [
+                                  TextSpan(
+                                      text: 'Already have an account?  ',
+                                      style: 12.sp(color: Colors.grey)),
+                                  TextSpan(
+                                      text: 'Log-in',
+                                      style: 14
+                                          .sp(color: Colors.white)
+                                          .copyWith(
+                                              decoration:
+                                                  TextDecoration.underline))
+                                ])),
+                              )
                             ],
                           ),
                         ),
@@ -169,10 +191,10 @@ Widget textfieldPh(TextEditingController ctr, String hint, String text) {
           border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
               borderSide: BorderSide(color: Colors.greenAccent))),
-      validator: (value) {
-        if (value == null || value.isEmpty) return '$text must not be empty';
-        return null;
-      },
+      // validator: (value) {
+      //   if (value == null || value.isEmpty) return '$text must not be empty';
+      //   return null;
+      // },
     ),
   );
 }
