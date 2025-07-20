@@ -68,8 +68,7 @@ class AuthRemote {
             'Error => status=$status , message : ${response.data['message']}');
       }
     } on DioException catch (e) {
-      throw Exception(
-          '${e.response!.statusCode} : ${e.response!.data['message']}');
+      throw Exception(' ${e.response!.data['message']}');
     }
   }
 
@@ -123,6 +122,25 @@ class AuthRemote {
       appnavigator.pushAndRemoveUntil(LoginScreen(), (_) => false);
       throw Exception(
           '${e.response!.statusCode} : ${e.response!.data['message']}');
+    }
+  }
+
+  Future<String> requestOtp(String email) async {
+    try {
+      final response =
+          await _dio.post(ApiUrl.requestOtp, data: {'email': email});
+
+      final status = response.statusCode!;
+
+      if (status >= 200 && status < 300) {
+        final message = response.data['message'];
+        return message;
+      } else {
+        throw Exception(
+            'Error => status=$status, message : ${response.data['message']}');
+      }
+    } on DioException catch (e) {
+      throw Exception('${e.response!.data['message']}');
     }
   }
 }

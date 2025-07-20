@@ -21,7 +21,12 @@ class AuthInterceptor extends Interceptor {
     return AuthInterceptor._(storage, refreshDio, dio);
   }
 
-  final publicPath = ['/auth/register', '/auth/refresh', '/auth/login'];
+  final publicPath = [
+    '/auth/register',
+    '/auth/refresh',
+    '/auth/login',
+    '/auth/requestOtp'
+  ];
 
   bool isJwtExpired(String? token) {
     return token == null || JwtDecoder.isExpired(token);

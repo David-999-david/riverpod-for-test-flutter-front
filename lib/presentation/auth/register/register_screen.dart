@@ -5,6 +5,7 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:riverpod_test/data/auth/model/user_model.dart';
 import 'package:riverpod_test/main.dart' show appnavigator;
 import 'package:riverpod_test/presentation/auth/login/login_screen.dart';
+import 'package:riverpod_test/presentation/auth/login/state/login_provider.dart';
 import 'package:riverpod_test/presentation/auth/register/state/register_provider.dart';
 import 'package:riverpod_test/presentation/home/home_screen.dart';
 import 'package:riverpod_test/theme/app_text_style.dart';
@@ -40,6 +41,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
           loading: () {});
     });
     final registerState = ref.watch(registerProvider);
+
     return Scaffold(
       body: Container(
         color: Color(0xff322E3E),
@@ -229,29 +231,46 @@ Widget textfieldEmail(TextEditingController ctr, String hint, String text) {
 }
 
 Widget textfieldPsw(TextEditingController ctr, String hint, String text) {
-  return Padding(
-    padding: const EdgeInsets.only(bottom: 15),
-    child: TextFormField(
-      autovalidateMode: AutovalidateMode.onUserInteraction,
-      controller: ctr,
-      decoration: InputDecoration(
-          hintText: hint,
-          hintStyle: 16.sp(),
-          filled: true,
-          enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
-              borderSide: BorderSide(color: Colors.black)),
-          focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
-              borderSide: BorderSide(color: Colors.greenAccent)),
-          border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
-              borderSide: BorderSide(color: Colors.greenAccent))),
-      validator: (value) {
-        if (value == null || value.isEmpty) return '$text must not be empty';
-        if (value.length < 8) return '$text must be greater than 8';
-        return null;
-      },
-    ),
+  final paswFocus = FocusNode();
+  return Consumer(
+    builder: (context, ref, child) {
+      final isObscured = ref.watch(passwrodProvider);
+      return Padding(
+        padding: const EdgeInsets.only(bottom: 15),
+        child: TextFormField(
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          controller: ctr,
+          focusNode: paswFocus,
+          obscureText: isObscured,
+          decoration: InputDecoration(
+              hintText: hint,
+              hintStyle: 16.sp(),
+              filled: true,
+              suffixIcon: IconButton(
+                  onPressed: () {
+                    ref.read(passwrodProvider.notifier).state = !isObscured;
+                  },
+                  icon: isObscured
+                      ? Icon(Icons.visibility_off)
+                      : Icon(Icons.visibility)),
+              enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(color: Colors.black)),
+              focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(color: Colors.greenAccent)),
+              border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(color: Colors.greenAccent))),
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return '$text must not be empty';
+            }
+            if (value.length < 8) return '$text must be greater than 8';
+            return null;
+          },
+        ),
+      );
+    },
   );
 }

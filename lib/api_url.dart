@@ -6,4 +6,6 @@ class ApiUrl {
   static const refresh = '/auth/refresh';
 
   static const login = '/auth/login';
+
+  static const requestOtp = '/auth/requestOtp';
 }

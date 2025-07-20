@@ -3,3 +3,5 @@ import 'package:riverpod_test/presentation/auth/login/state/login_notifier.dart'
 
 final loginprovider = StateNotifierProvider<LoginNotifier, AsyncValue<void>>(
     (ref) => LoginNotifier());
+
+final passwrodProvider = StateProvider<bool>((_) => true);

@@ -3,16 +3,41 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:riverpod_test/data/auth/model/user_model.dart';
 import 'package:riverpod_test/main.dart';
+import 'package:riverpod_test/presentation/auth/forgotpassword/email_verified_screen.dart';
 import 'package:riverpod_test/presentation/auth/login/state/login_provider.dart';
 import 'package:riverpod_test/presentation/auth/register/register_screen.dart';
 import 'package:riverpod_test/presentation/home/home_screen.dart';
 import 'package:riverpod_test/theme/app_text_style.dart';
 
-class LoginScreen extends ConsumerWidget {
+class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends ConsumerState<LoginScreen> {
+  final GlobalKey<FormState> key = GlobalKey<FormState>();
+
+  late final TextEditingController email;
+  late final TextEditingController psw;
+
+  @override
+  void initState() {
+    super.initState();
+    email = TextEditingController();
+    psw = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    email.dispose();
+    psw.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     ref.listen<AsyncValue<void>>(loginprovider, (prev, next) {
       next.when(
           data: (_) {
@@ -26,11 +51,6 @@ class LoginScreen extends ConsumerWidget {
     });
 
     final loginState = ref.watch(loginprovider);
-
-    final GlobalKey<FormState> key = GlobalKey<FormState>();
-
-    final TextEditingController _email = TextEditingController();
-    final TextEditingController _pass = TextEditingController();
 
     return Scaffold(
         body: Container(
@@ -72,8 +92,20 @@ class LoginScreen extends ConsumerWidget {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          textfieldEmail(_email, 'Email', 'Email'),
-                          textfieldPsw(_pass, 'Password', 'Password'),
+                          textfieldEmail(email, 'Email', 'Email'),
+                          textfieldPsw(psw, 'Password', 'Password'),
+                          Align(
+                            alignment: Alignment.topRight,
+                            child: GestureDetector(
+                              onTap: () {
+                                appnavigator.push(EmailVerifiedScreen());
+                              },
+                              child: Text(
+                                'Forgot-password',
+                                style: 11.sp(color: Colors.white),
+                              ),
+                            ),
+                          ),
                           ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                   padding: EdgeInsets.symmetric(
@@ -86,15 +118,15 @@ class LoginScreen extends ConsumerWidget {
 
                                 ref.read(loginprovider.notifier).login(
                                     LoginModel(
-                                        email: _email.text.trim(),
-                                        password: _pass.text.trim()));
+                                        email: email.text.trim(),
+                                        password: psw.text.trim()));
                               },
                               child: Text(
                                 'Log-in',
                                 style: 13.sp(),
                               )),
                           SizedBox(
-                            height: 20,
+                            height: 10,
                           ),
                           GestureDetector(
                             onTap: () {
