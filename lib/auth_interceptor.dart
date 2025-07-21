@@ -26,7 +26,8 @@ class AuthInterceptor extends Interceptor {
     '/auth/refresh',
     '/auth/login',
     '/auth/requestOtp',
-    '/auth/verifyOtp'
+    '/auth/verifyOtp',
+    '/auth/changePsw'
   ];
 
   bool isJwtExpired(String? token) {

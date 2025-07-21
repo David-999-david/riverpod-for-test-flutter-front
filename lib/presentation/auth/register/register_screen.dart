@@ -83,57 +83,59 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 20, vertical: 70),
-                          child: Column(
-                            children: [
-                              textfield(_name, 'Name', 'User-name'),
-                              textfieldEmail(_email, 'Email', 'Email'),
-                              textfieldPh(
-                                  _phone, 'Phone number', 'Phone number'),
-                              textfieldPsw(_password, 'Password', 'Password'),
-                              ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 8, vertical: 3),
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(8)),
-                                      side: BorderSide(color: Colors.blue)),
-                                  onPressed: () {
-                                    if (!key.currentState!.validate()) return;
-                                    ref
-                                        .read(registerProvider.notifier)
-                                        .register(RegisterModel(
-                                            name: _name.text.trim(),
-                                            email: _email.text.trim(),
-                                            phone: _phone.text.trim(),
-                                            password: _password.text.trim()));
+                          child: SingleChildScrollView(
+                            child: Column(
+                              children: [
+                                textfield(_name, 'Name', 'User-name'),
+                                textfieldEmail(_email, 'Email', 'Email'),
+                                textfieldPh(
+                                    _phone, 'Phone number', 'Phone number'),
+                                textfieldPsw(_password, 'Password', 'Password'),
+                                ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 8, vertical: 3),
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(8)),
+                                        side: BorderSide(color: Colors.blue)),
+                                    onPressed: () {
+                                      if (!key.currentState!.validate()) return;
+                                      ref
+                                          .read(registerProvider.notifier)
+                                          .register(RegisterModel(
+                                              name: _name.text.trim(),
+                                              email: _email.text.trim(),
+                                              phone: _phone.text.trim(),
+                                              password: _password.text.trim()));
+                                    },
+                                    child: Text(
+                                      'Sign up',
+                                      style: 13.sp(),
+                                    )),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    appnavigator.push(LoginScreen());
                                   },
-                                  child: Text(
-                                    'Sign up',
-                                    style: 13.sp(),
-                                  )),
-                              SizedBox(
-                                height: 20,
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  appnavigator.push(LoginScreen());
-                                },
-                                child: RichText(
-                                    text: TextSpan(children: [
-                                  TextSpan(
-                                      text: 'Already have an account?  ',
-                                      style: 12.sp(color: Colors.grey)),
-                                  TextSpan(
-                                      text: 'Log-in',
-                                      style: 14
-                                          .sp(color: Colors.white)
-                                          .copyWith(
-                                              decoration:
-                                                  TextDecoration.underline))
-                                ])),
-                              )
-                            ],
+                                  child: RichText(
+                                      text: TextSpan(children: [
+                                    TextSpan(
+                                        text: 'Already have an account?  ',
+                                        style: 12.sp(color: Colors.grey)),
+                                    TextSpan(
+                                        text: 'Log-in',
+                                        style: 14
+                                            .sp(color: Colors.white)
+                                            .copyWith(
+                                                decoration:
+                                                    TextDecoration.underline))
+                                  ])),
+                                )
+                              ],
+                            ),
                           ),
                         ),
                       ),

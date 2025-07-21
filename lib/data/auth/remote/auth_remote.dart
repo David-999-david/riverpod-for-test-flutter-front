@@ -167,4 +167,29 @@ class AuthRemote {
       throw Exception('${e.response!.data['message']}');
     }
   }
+
+  Future<String> changePsw(String newPsw) async {
+    try {
+      String? resetToken = await storage.read(key: Local.resetToken);
+
+      if (resetToken == null) {
+        throw Exception('Reset Token is missing');
+      }
+
+      final response = await _dio.post(ApiUrl.changePsw,
+          data: {'resetToken': resetToken, 'newPsw': newPsw});
+
+      final status = response.statusCode!;
+
+      if (status >= 200 && status < 300) {
+        final message = response.data['data'] as String;
+        return message;
+      } else {
+        throw Exception(
+            'Error => status=$status, message : ${response.data['message']}');
+      }
+    } on DioException catch (e) {
+      throw Exception('${e.response!.data['message']}');
+    }
+  }
 }

@@ -10,4 +10,6 @@ class ApiUrl {
   static const requestOtp = '/auth/requestOtp';
 
   static const verifyOtp = '/auth/verifyOtp';
+
+  static const changePsw = '/auth/changePsw';
 }
