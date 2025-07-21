@@ -8,4 +8,6 @@ class ApiUrl {
   static const login = '/auth/login';
 
   static const requestOtp = '/auth/requestOtp';
+
+  static const verifyOtp = '/auth/verifyOtp';
 }

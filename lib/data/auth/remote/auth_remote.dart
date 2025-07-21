@@ -140,6 +140,30 @@ class AuthRemote {
             'Error => status=$status, message : ${response.data['message']}');
       }
     } on DioException catch (e) {
+      throw Exception('${e.response!.data['message']} ');
+    }
+  }
+
+  Future<void> verifyOtp(String email, String otp) async {
+    try {
+      final response =
+          await _dio.post(ApiUrl.verifyOtp, data: {'email': email, 'otp': otp});
+
+      final status = response.statusCode!;
+
+      if (status >= 200 && status < 300) {
+        final resetTk = response.data['resetToken'];
+
+        if (resetTk != null) {
+          await storage.write(key: Local.resetToken, value: resetTk);
+        } else {
+          throw Exception('RESET Token is missing');
+        }
+      } else {
+        throw Exception(
+            'Error => status=$status, message : ${response.data['message']}');
+      }
+    } on DioException catch (e) {
       throw Exception('${e.response!.data['message']}');
     }
   }

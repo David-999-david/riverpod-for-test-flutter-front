@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:riverpod_test/main.dart';
-import 'package:riverpod_test/presentation/auth/forgotpassword/state/email_verified_provider.dart';
+import 'package:riverpod_test/presentation/auth/forgotpassword/email_verify/state/email_verified_provider.dart';
+import 'package:riverpod_test/presentation/auth/forgotpassword/otp_verify/otp_verify.dart';
 import 'package:riverpod_test/presentation/auth/register/register_screen.dart';
-import 'package:riverpod_test/presentation/auth/verify_otp/verify_otp.dart';
 import 'package:riverpod_test/theme/app_text_style.dart';
 
 class EmailVerifiedScreen extends ConsumerStatefulWidget {
@@ -39,7 +39,31 @@ class _EmailVerifiedScreenState extends ConsumerState<EmailVerifiedScreen> {
             ScaffoldMessenger.of(context)
                 .showSnackBar(SnackBar(content: Text(msg.toString())));
 
-            appnavigator.push(VerifyOtp());
+            // appnavigator.push(OtpVerify());
+            showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (context) {
+                return AlertDialog(
+                  backgroundColor: Color(0xff322E3E),
+                  title: Align(
+                    alignment: Alignment.topRight,
+                    child: InkWell(
+                      onTap: () {
+                        appnavigator.pop();
+                      },
+                      child: Icon(
+                        Icons.cancel,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                  content: OtpVerify(
+                    email: email.text.trim(),
+                  ),
+                );
+              },
+            );
           },
           error: (error, _) {
             ScaffoldMessenger.of(context)

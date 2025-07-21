@@ -15,3 +15,5 @@ class EmailVerifiedNotifier extends StateNotifier<AsyncValue<String>> {
     state = await AsyncValue.guard(() => AuthRemote().requestOtp(email));
   }
 }
+
+

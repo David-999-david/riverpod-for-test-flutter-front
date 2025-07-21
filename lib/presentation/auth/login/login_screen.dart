@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:riverpod_test/data/auth/model/user_model.dart';
 import 'package:riverpod_test/main.dart';
-import 'package:riverpod_test/presentation/auth/forgotpassword/email_verified_screen.dart';
+import 'package:riverpod_test/presentation/auth/forgotpassword/email_verify/email_verified_screen.dart';
 import 'package:riverpod_test/presentation/auth/login/state/login_provider.dart';
 import 'package:riverpod_test/presentation/auth/register/register_screen.dart';
 import 'package:riverpod_test/presentation/home/home_screen.dart';
