@@ -6,6 +6,7 @@ import 'package:riverpod_test/main.dart';
 import 'package:riverpod_test/presentation/auth/forgotpassword/email_verify/email_verified_screen.dart';
 import 'package:riverpod_test/presentation/auth/login/state/login_provider.dart';
 import 'package:riverpod_test/presentation/auth/register/register_screen.dart';
+import 'package:riverpod_test/presentation/bottom_nav_bar/bottom_nav_bar.dart';
 import 'package:riverpod_test/presentation/home/home_screen.dart';
 import 'package:riverpod_test/theme/app_text_style.dart';
 
@@ -41,7 +42,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     ref.listen<AsyncValue<void>>(loginprovider, (prev, next) {
       next.when(
           data: (_) {
-            appnavigator.pushReplacement(HomeScreen(), null);
+            appnavigator.pushReplacement(BottomNavBar(), null);
           },
           error: (error, _) {
             ScaffoldMessenger.of(context)
@@ -89,64 +90,61 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 20, vertical: 70),
-                      child: SingleChildScrollView(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            textfieldEmail(email, 'Email', 'Email'),
-                            textfieldPsw(psw, 'Password', 'Password'),
-                            Align(
-                              alignment: Alignment.topRight,
-                              child: GestureDetector(
-                                onTap: () {
-                                  appnavigator.push(EmailVerifiedScreen());
-                                },
-                                child: Text(
-                                  'Forgot-password',
-                                  style: 11.sp(color: Colors.white),
-                                ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          textfieldEmail(email, 'Email', 'Email'),
+                          textfieldPsw(psw, 'Password', 'Password'),
+                          Align(
+                            alignment: Alignment.topRight,
+                            child: GestureDetector(
+                              onTap: () {
+                                appnavigator.push(EmailVerifiedScreen());
+                              },
+                              child: Text(
+                                'Forgot-password',
+                                style: 11.sp(color: Colors.white),
                               ),
                             ),
-                            ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 8, vertical: 3),
-                                    side: BorderSide(color: Colors.blue),
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(8))),
-                                onPressed: () {
-                                  if (!key.currentState!.validate()) return;
+                          ),
+                          ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 8, vertical: 3),
+                                  side: BorderSide(color: Colors.blue),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8))),
+                              onPressed: () {
+                                if (!key.currentState!.validate()) return;
 
-                                  ref.read(loginprovider.notifier).login(
-                                      LoginModel(
-                                          email: email.text.trim(),
-                                          password: psw.text.trim()));
-                                },
-                                child: Text(
-                                  'Log-in',
-                                  style: 13.sp(),
-                                )),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                appnavigator.push(RegisterScreen());
+                                ref.read(loginprovider.notifier).login(
+                                    LoginModel(
+                                        email: email.text.trim(),
+                                        password: psw.text.trim()));
                               },
-                              child: RichText(
-                                  text: TextSpan(children: [
-                                TextSpan(
-                                    text: 'Don\'t have and account?  ',
-                                    style: 12.sp(color: Colors.grey)),
-                                TextSpan(
-                                    text: 'Register here!',
-                                    style: 13.sp(color: Colors.white).copyWith(
-                                        decoration: TextDecoration.underline))
-                              ])),
-                            )
-                          ],
-                        ),
+                              child: Text(
+                                'Log-in',
+                                style: 13.sp(),
+                              )),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              appnavigator.push(RegisterScreen());
+                            },
+                            child: RichText(
+                                text: TextSpan(children: [
+                              TextSpan(
+                                  text: 'Don\'t have and account?  ',
+                                  style: 12.sp(color: Colors.grey)),
+                              TextSpan(
+                                  text: 'Register here!',
+                                  style: 13.sp(color: Colors.white).copyWith(
+                                      decoration: TextDecoration.underline))
+                            ])),
+                          )
+                        ],
                       ),
                     ),
                   ),

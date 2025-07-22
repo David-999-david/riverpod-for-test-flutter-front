@@ -4,3 +4,4 @@ import 'package:riverpod_test/presentation/auth/forgotpassword/email_verify/stat
 final requestOtpProvider =
     StateNotifierProvider<EmailVerifiedNotifier, AsyncValue<String>>(
         (ref) => EmailVerifiedNotifier());
+

@@ -6,11 +6,9 @@ class SplashNotifier extends StateNotifier<AsyncValue<void>> {
 
   Future<void> handleStartScreen() async {
     state = AsyncValue.loading();
+    await Future.delayed(Duration(seconds: 3));
     try {
-      await Future.wait([
-        AuthRemote().handleStartScreen(),
-        Future.delayed(Duration(seconds: 5))
-      ]);
+      await AuthRemote().handleStartScreen();
       state = AsyncValue.data(null);
     } catch (e, s) {
       state = AsyncValue.error(e, s);

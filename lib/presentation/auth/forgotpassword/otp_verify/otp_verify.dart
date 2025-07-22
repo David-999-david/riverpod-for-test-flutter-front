@@ -8,7 +8,7 @@ import 'package:riverpod_test/presentation/auth/forgotpassword/reset_password/re
 import 'package:riverpod_test/theme/app_text_style.dart';
 
 class OtpVerify extends ConsumerStatefulWidget {
-  const OtpVerify({super.key, required this.email});
+  const OtpVerify({super.key, this.email = ''});
 
   final String email;
 

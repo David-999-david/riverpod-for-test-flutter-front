@@ -2,9 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_test/app_navigator.dart';
 import 'package:riverpod_test/dio_client.dart';
+import 'package:riverpod_test/presentation/address/address.dart';
+import 'package:riverpod_test/presentation/auth/forgotpassword/email_verify/email_verified_screen.dart';
+import 'package:riverpod_test/presentation/auth/forgotpassword/otp_verify/otp_verify.dart';
 import 'package:riverpod_test/presentation/auth/forgotpassword/reset_password/reset_password.dart';
 import 'package:riverpod_test/presentation/auth/login/login_screen.dart';
+import 'package:riverpod_test/presentation/auth/register/register_screen.dart';
+import 'package:riverpod_test/presentation/bottom_nav_bar/bottom_nav_bar.dart';
+import 'package:riverpod_test/presentation/bottom_nav_bar/state/nav_notifier.dart';
+import 'package:riverpod_test/presentation/bottom_nav_bar/state/nav_provider.dart';
+import 'package:riverpod_test/presentation/filter/filter.dart';
+import 'package:riverpod_test/presentation/home/home_screen.dart';
+import 'package:riverpod_test/presentation/search_screen/search.dart';
+import 'package:riverpod_test/presentation/setting/setting.dart';
 import 'package:riverpod_test/presentation/splash_screen/splash_screen.dart';
+import 'package:riverpod_test/routes/routes.dart';
 import 'package:riverpod_test/theme/app_theme.dart';
 
 final appnavigator = AppNavigator();
@@ -12,7 +24,18 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await DioClient.init();
-  runApp(ProviderScope(child: Myapp()));
+  runApp(
+      //   ProviderScope(
+      //   overrides: [
+      //     navProvider.overrideWith((ref) {
+      //       final notfier = NavNotifier();
+      //       notfier.setIndex(2);
+      //       return notfier;
+      //     })
+      //   ],
+      //   child: Myapp(),
+      // ));
+      ProviderScope(child: Myapp()));
 }
 
 class Myapp extends StatelessWidget {
@@ -24,7 +47,21 @@ class Myapp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       navigatorKey: appnavigator.navigatorKey,
       theme: AppTheme().appTheme,
-      home: LoginScreen(),
+      initialRoute: Routes.splash,
+      routes: {
+        Routes.splash: (_) => SplashScreen(),
+        Routes.login: (_) => LoginScreen(),
+        Routes.register: (_) => RegisterScreen(),
+        Routes.verifyemail: (_) => EmailVerifiedScreen(),
+        Routes.verifyOtp: (_) => OtpVerify(),
+        Routes.resetPsw: (_) => ResetPassword(),
+        Routes.nav: (_) => BottomNavBar(),
+        Routes.home: (_) => HomeScreen(),
+        Routes.address: (_) => Address(),
+        Routes.filter: (_) => Filter(),
+        Routes.search: (_) => Search(),
+        Routes.setting: (_) => Setting()
+      },
     );
   }
 }

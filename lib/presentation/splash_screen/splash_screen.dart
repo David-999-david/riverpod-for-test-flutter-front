@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:riverpod_test/main.dart';
+import 'package:riverpod_test/presentation/auth/login/login_screen.dart';
+import 'package:riverpod_test/presentation/home/home_screen.dart';
 
 import 'package:riverpod_test/presentation/splash_screen/state/splash_provider.dart';
 
@@ -14,10 +17,10 @@ class SplashScreen extends ConsumerStatefulWidget {
 class _SplashScreenState extends ConsumerState<SplashScreen> {
   @override
   void initState() {
+    super.initState();
     Future.microtask(() {
       ref.read(splashprovider.notifier).handleStartScreen();
     });
-    super.initState();
   }
 
   @override
