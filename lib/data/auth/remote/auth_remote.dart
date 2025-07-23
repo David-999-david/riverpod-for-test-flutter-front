@@ -280,4 +280,43 @@ class AuthRemote {
       throw Exception('${e.response!.data['message']}');
     }
   }
+
+  Future<void> verifyOtpAndUpgrade(String otp) async {
+    try {
+      final response = await _dio.post(ApiUrl.authorOtp, data: {'otp': otp});
+
+      final status = response.statusCode!;
+
+      if (status >= 200 && status < 300) {
+        final data = response.data['data'] as Map<String, dynamic>;
+
+        final access = data['access'];
+
+        final refresh = data['refresh'];
+
+        if (access == null) {
+          throw Exception('Access token is missing');
+        }
+
+        if (refresh == null) {
+          throw Exception('refresh token is missing');
+        }
+
+        await storage.delete(key: Local.accessToken);
+        await storage.delete(key: Local.refreshToken);
+
+        try {
+          await storage.write(key: Local.accessToken, value: access);
+          await storage.write(key: Local.refreshToken, value: refresh);
+        } catch (e) {
+          throw Exception('Access or refresh failed to store in local storage');
+        }
+      } else {
+        throw Exception(
+            'Error => status=$status, message : ${response.data['message']}');
+      }
+    } on DioException catch (e) {
+      throw Exception('${e.response!.data['message']}');
+    }
+  }
 }

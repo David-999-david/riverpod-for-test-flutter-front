@@ -16,4 +16,6 @@ class ApiUrl {
   static const userinfo = '/user/info';
 
   static const checkSecret = '/author/sendOtp';
+
+  static const authorOtp = '/author/verifyOtp';
 }
