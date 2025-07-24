@@ -18,4 +18,8 @@ class ApiUrl {
   static const checkSecret = '/author/sendOtp';
 
   static const authorOtp = '/author/verifyOtp';
+
+  static const createBook = '/author/createBook';
+
+  static const fetAllBook = '/author/allBook';
 }

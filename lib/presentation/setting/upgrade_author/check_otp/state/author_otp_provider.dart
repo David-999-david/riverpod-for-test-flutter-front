@@ -5,4 +5,3 @@ final verifyAuthorOtpProvider =
     StateNotifierProvider<AuthorOtpNotifier, AsyncValue<void>>(
         (ref) => AuthorOtpNotifier());
 
-final ve

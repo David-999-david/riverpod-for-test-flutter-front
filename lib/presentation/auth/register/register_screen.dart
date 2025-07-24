@@ -7,6 +7,7 @@ import 'package:riverpod_test/main.dart' show appnavigator;
 import 'package:riverpod_test/presentation/auth/login/login_screen.dart';
 import 'package:riverpod_test/presentation/auth/login/state/login_provider.dart';
 import 'package:riverpod_test/presentation/auth/register/state/register_provider.dart';
+import 'package:riverpod_test/presentation/bottom_nav_bar/bottom_nav_bar.dart';
 import 'package:riverpod_test/presentation/home/home_screen.dart';
 import 'package:riverpod_test/theme/app_text_style.dart';
 
@@ -30,7 +31,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
     ref.listen<AsyncValue<void>>(registerProvider, (pref, next) {
       next.when(
           data: (_) {
-            appnavigator.pushReplacement(HomeScreen(), null);
+            appnavigator.pushReplacement(BottomNavBar(), null);
           },
           error: (error, _) {
             final message =

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:pinput/pinput.dart';
 import 'package:riverpod_test/main.dart';
+import 'package:riverpod_test/presentation/setting/state/user_provider.dart';
 import 'package:riverpod_test/presentation/setting/upgrade_author/check_otp/state/author_otp_provider.dart';
 import 'package:riverpod_test/theme/app_text_style.dart';
 
@@ -45,6 +46,7 @@ class _AuthorOtpVerifyState extends ConsumerState<AuthorOtpVerify> {
             appnavigator.pop();
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                 content: Text('Upgrade to Author success! Have fun😎')));
+            ref.read(userProvider.notifier).getInfo();
           },
           error: (error, _) {
             appnavigator.pop();
