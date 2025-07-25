@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_test/app_navigator.dart';
 import 'package:riverpod_test/dio_client.dart';
-import 'package:riverpod_test/presentation/address/address.dart';
+import 'package:riverpod_test/presentation/user_home/user_home.dart';
 import 'package:riverpod_test/presentation/auth/forgotpassword/email_verify/email_verified_screen.dart';
 import 'package:riverpod_test/presentation/auth/forgotpassword/otp_verify/otp_verify.dart';
 import 'package:riverpod_test/presentation/auth/forgotpassword/reset_password/reset_password.dart';
@@ -57,7 +57,7 @@ class Myapp extends StatelessWidget {
         Routes.resetPsw: (_) => ResetPassword(),
         Routes.nav: (_) => BottomNavBar(),
         Routes.home: (_) => HomeScreen(),
-        Routes.address: (_) => Address(),
+        Routes.address: (_) => UserHome(),
         Routes.filter: (_) => Filter(),
         Routes.search: (_) => Search(),
         Routes.setting: (_) => Setting()

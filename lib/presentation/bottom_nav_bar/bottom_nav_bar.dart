@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:riverpod_test/main.dart';
-import 'package:riverpod_test/presentation/address/address.dart';
+import 'package:riverpod_test/presentation/user_home/user_home.dart';
 import 'package:riverpod_test/presentation/bottom_nav_bar/state/nav_provider.dart';
 import 'package:riverpod_test/presentation/filter/filter.dart';
 import 'package:riverpod_test/presentation/home/home_screen.dart';
@@ -10,7 +9,6 @@ import 'package:riverpod_test/presentation/home/state/book_provider.dart';
 import 'package:riverpod_test/presentation/search_screen/search.dart';
 import 'package:riverpod_test/presentation/setting/setting.dart';
 import 'package:riverpod_test/presentation/setting/state/user_provider.dart';
-import 'package:riverpod_test/routes/routes.dart';
 
 class BottomNavBar extends ConsumerStatefulWidget {
   const BottomNavBar({super.key, this.initialIndex = 0});
@@ -37,7 +35,7 @@ class _BottomNavBarState extends ConsumerState<BottomNavBar> {
 
     return userState.when(data: (user) {
       final firstTab =
-          user.role.first.toLowerCase() == 'author' ? HomeScreen() : Address();
+          user.role.first.toLowerCase() == 'author' ? HomeScreen() : UserHome();
 
       final List<Widget> screen = [firstTab, Search(), Filter(), Setting()];
 
@@ -50,7 +48,7 @@ class _BottomNavBarState extends ConsumerState<BottomNavBar> {
           selectedIndex: index,
           onDestinationSelected: (value) {
             ref.read(navProvider.notifier).setIndex(value);
-            if (value == 0 && user!.role.first.toLowerCase() == 'author') {
+            if (value == 0 && user.role.first.toLowerCase() == 'author') {
               if (user.role.first.toLowerCase() == 'author') {
                 ref.read(bookfetchProvider.notifier).fetchAll();
               }
