@@ -319,4 +319,30 @@ class AuthRemote {
       throw Exception('${e.response!.data['message']}');
     }
   }
+
+  Future<void> signOut() async {
+    try {
+      String? refresh = await storage.read(key: Local.refreshToken);
+
+      if (refresh == null) {
+        appnavigator.pushAndRemoveUntil(LoginScreen(), (_) => false);
+      }
+
+      final response =
+          await _dio.post(ApiUrl.logOut, data: {'refreshToken': refresh});
+
+      final status = response.statusCode!;
+
+      if (status >= 200 && status < 300) {
+        await Future.wait([
+          storage.delete(key: Local.accessToken),
+          storage.delete(key: Local.refreshToken)
+        ]);
+
+        appnavigator.pushAndRemoveUntil(LoginScreen(), (_) => false);
+      } else {}
+    } on DioException catch (e) {
+      throw Exception('Error =>${e.response!.data['message']}');
+    }
+  }
 }

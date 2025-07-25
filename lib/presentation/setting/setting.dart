@@ -15,15 +15,15 @@ class Setting extends ConsumerStatefulWidget {
 }
 
 class _SettingState extends ConsumerState<Setting> {
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(userProvider.notifier).getInfo();
-    });
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   WidgetsBinding.instance.addPostFrameCallback((_) {
+  //     ref.read(userProvider.notifier).getInfo();
+  //   });
+  // }
 
-  Future<dynamic> settingCall(String setting) {
+  Future<dynamic> settingCall(String setting) async {
     switch (setting) {
       case 'Author':
         return showDialog(
@@ -70,6 +70,9 @@ class _SettingState extends ConsumerState<Setting> {
             );
           },
         );
+      case ('Log out'):
+        await ref.read(logoutProvider.notifier).logOut();
+        ref.invalidate(userProvider);
       default:
         return Future.value();
     }
@@ -79,6 +82,8 @@ class _SettingState extends ConsumerState<Setting> {
   Widget build(BuildContext context) {
     final userInfoState = ref.watch(userProvider);
     final user = userInfoState.value;
+
+    final logoutState = ref.watch(logoutProvider);
     return Scaffold(
         body: Container(
       color: Color(0xff322E3E),
@@ -133,7 +138,14 @@ class _SettingState extends ConsumerState<Setting> {
               SizedBox(
                 height: 15,
               ),
-              _settingItem('name'),
+              logoutState.isLoading
+                  ? SpinKitDualRing(
+                      color: Colors.yellow,
+                      size: 20,
+                    )
+                  : _settingItem('Log out', onTap: () {
+                      settingCall('Log out');
+                    }),
               SizedBox(
                 height: 15,
               ),

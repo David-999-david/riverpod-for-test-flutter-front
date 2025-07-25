@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 class InsertBook {
   final String category;
   final String subCategory;
@@ -64,6 +66,7 @@ class ReturnBook {
   final String subCategory;
   final String bookName;
   final String bookDesc;
+  final DateTime created;
 
   ReturnBook(
       {required this.bookId,
@@ -71,7 +74,10 @@ class ReturnBook {
       required this.category,
       required this.subCategory,
       required this.bookName,
-      required this.bookDesc});
+      required this.bookDesc,
+      required this.created});
+
+  String get formatedDate => DateFormat('yyyy-MM-dd HH-mm').format(created);
 
   factory ReturnBook.fromJson(Map<String, dynamic> json) {
     return ReturnBook(
@@ -80,6 +86,7 @@ class ReturnBook {
         category: json['category'] as String,
         subCategory: json['subCategory'] as String,
         bookName: json['bookName'] as String,
-        bookDesc: json['bookDesc'] as String);
+        bookDesc: json['bookDesc'] as String,
+        created: DateTime.parse(json['createdTime'] as String));
   }
 }

@@ -8,6 +8,7 @@ import 'package:riverpod_test/presentation/auth/login/state/login_provider.dart'
 import 'package:riverpod_test/presentation/auth/register/register_screen.dart';
 import 'package:riverpod_test/presentation/bottom_nav_bar/bottom_nav_bar.dart';
 import 'package:riverpod_test/presentation/home/home_screen.dart';
+import 'package:riverpod_test/presentation/setting/state/user_provider.dart';
 import 'package:riverpod_test/theme/app_text_style.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
@@ -41,7 +42,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   Widget build(BuildContext context) {
     ref.listen<AsyncValue<void>>(loginprovider, (prev, next) {
       next.when(
-          data: (_) {
+          data: (_) async {
+            ref.invalidate(userProvider);
+
+            await ref.read(userProvider.notifier).getInfo();
+
             appnavigator.pushReplacement(BottomNavBar(), null);
           },
           error: (error, _) {

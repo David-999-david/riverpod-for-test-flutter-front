@@ -39,6 +39,8 @@ class _CreateBookState extends ConsumerState<CreateBook> {
           data: (book) {
             ScaffoldMessenger.of(context)
                 .showSnackBar(SnackBar(content: Text('A new book created')));
+            ref.read(bookfetchProvider.notifier).fetchAll();
+
             appnavigator.pop();
           },
           error: (error, _) {

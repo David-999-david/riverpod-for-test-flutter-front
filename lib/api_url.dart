@@ -22,4 +22,6 @@ class ApiUrl {
   static const createBook = '/author/createBook';
 
   static const fetAllBook = '/author/allBook';
+
+  static const logOut = '/auth/signOut';
 }

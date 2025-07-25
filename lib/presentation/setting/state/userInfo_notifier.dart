@@ -3,7 +3,9 @@ import 'package:riverpod_test/data/user/model/user_info_mode.dart';
 import 'package:riverpod_test/data/user/remote/user_remote.dart';
 
 class UserinfoNotifier extends StateNotifier<AsyncValue<UserInfoMode>> {
-  UserinfoNotifier() : super(AsyncValue.loading());
+  UserinfoNotifier() : super(AsyncValue.loading()) {
+    getInfo();
+  }
 
   Future<void> getInfo() async {
     state = AsyncValue.loading();
