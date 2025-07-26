@@ -77,7 +77,7 @@ class ReturnBook {
       required this.bookDesc,
       required this.created});
 
-  String get formatedDate => DateFormat('yyyy-MM-dd HH-mm').format(created);
+  String get formatedDate => DateFormat('yyyy-MM-dd HH:mm').format(created);
 
   factory ReturnBook.fromJson(Map<String, dynamic> json) {
     return ReturnBook(

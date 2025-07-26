@@ -43,4 +43,23 @@ class UserRemote {
       throw Exception('${e.response!.data['messaage']}');
     }
   }
+
+  Future<List<BookWithAuthor>> getAllAuthorsBooks() async {
+    try {
+      final response = await _dio.get(ApiUrl.getAllAuthorsBooks);
+
+      final status = response.statusCode!;
+
+      if (status >= 200 && status < 300) {
+        final data = response.data['data'] as List<dynamic>;
+
+        return data.map((b) => BookWithAuthor.fromJson(b)).toList();
+      } else {
+        throw Exception(
+            'Error => status=$status, message : ${response.data['message']}');
+      }
+    } on DioException catch (e) {
+      throw Exception('${e.response!.data['message']}');
+    }
+  }
 }
