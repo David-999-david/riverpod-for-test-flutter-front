@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_test/app_navigator.dart';
 import 'package:riverpod_test/dio_client.dart';
@@ -9,8 +10,6 @@ import 'package:riverpod_test/presentation/auth/forgotpassword/reset_password/re
 import 'package:riverpod_test/presentation/auth/login/login_screen.dart';
 import 'package:riverpod_test/presentation/auth/register/register_screen.dart';
 import 'package:riverpod_test/presentation/bottom_nav_bar/bottom_nav_bar.dart';
-import 'package:riverpod_test/presentation/bottom_nav_bar/state/nav_notifier.dart';
-import 'package:riverpod_test/presentation/bottom_nav_bar/state/nav_provider.dart';
 import 'package:riverpod_test/presentation/filter/filter.dart';
 import 'package:riverpod_test/presentation/home/home_screen.dart';
 import 'package:riverpod_test/presentation/search_screen/search.dart';
@@ -18,12 +17,20 @@ import 'package:riverpod_test/presentation/setting/setting.dart';
 import 'package:riverpod_test/presentation/splash_screen/splash_screen.dart';
 import 'package:riverpod_test/routes/routes.dart';
 import 'package:riverpod_test/theme/app_theme.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 final appnavigator = AppNavigator();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+ 
   await DioClient.init();
+
+  await dotenv.load(fileName: ".env");
+
+  await Supabase.initialize(
+    url: dotenv.env['SUPABASE_URL']!,
+    anonKey: dotenv.env['SUPABASE_ANNON_KEY']!
+  );
   runApp(
       //   ProviderScope(
       //   overrides: [

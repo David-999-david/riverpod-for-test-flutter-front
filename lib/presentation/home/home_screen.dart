@@ -33,6 +33,7 @@ class _HomeScreenState extends ConsumerState {
     final userState = ref.watch(userProvider);
     final user = userState.value;
     return Scaffold(
+      backgroundColor: Color.fromARGB(255, 209, 209, 211),
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
@@ -83,20 +84,73 @@ class _HomeScreenState extends ConsumerState {
             ),
           ),
           SliverPadding(
-            padding: EdgeInsets.symmetric(horizontal: 150, vertical: 5),
+            padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
             sliver: SliverToBoxAdapter(
-              child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      fixedSize: Size(50, 40),
-                      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          side: BorderSide(color: Colors.blue))),
-                  onPressed: () {
-                    appnavigator.push(CreateBook());
-                  },
-                  child: Text('add')),
-            ),
+                child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        fixedSize: Size(50, 40),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            side: BorderSide(color: Colors.blue))),
+                    onPressed: () {
+                      appnavigator.push(CreateBook());
+                    },
+                    child: Text('ADD')),
+                ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        fixedSize: Size(50, 40),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            side: BorderSide(color: Colors.blue))),
+                    onPressed: () {
+                      appnavigator.push(CreateBook());
+                    },
+                    child: Text('EDIT')),
+                ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        fixedSize: Size(50, 40),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            side: BorderSide(color: Colors.blue))),
+                    onPressed: () {
+                      appnavigator.push(CreateBook());
+                    },
+                    child: Text('Do')),
+                ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        fixedSize: Size(50, 40),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            side: BorderSide(color: Colors.blue))),
+                    onPressed: () {
+                      appnavigator.push(CreateBook());
+                    },
+                    child: Text('add')),
+                ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        fixedSize: Size(50, 40),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            side: BorderSide(color: Colors.blue))),
+                    onPressed: () {
+                      appnavigator.push(CreateBook());
+                    },
+                    child: Text('add')),
+              ],
+            )),
           ),
           fetchState.isLoading
               ? SliverFillRemaining(
@@ -121,7 +175,7 @@ class _HomeScreenState extends ConsumerState {
                                   crossAxisCount: 2,
                                   mainAxisSpacing: 8,
                                   crossAxisSpacing: 7,
-                                  childAspectRatio: 0.72)),
+                                  mainAxisExtent: 245)),
                     )
                   : SliverToBoxAdapter(
                       child: Center(
@@ -139,12 +193,9 @@ class _HomeScreenState extends ConsumerState {
 Widget bookItem(ReturnBook book) {
   return Container(
     decoration: BoxDecoration(
-        gradient: LinearGradient(colors: [
-          Color(0xffBABABD).withOpacity(0.3),
-          Color(0xffC39CA4).withOpacity(0.7)
-        ], begin: Alignment.topCenter, end: Alignment.bottomCenter),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.greenAccent)),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: Colors.black)),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -170,7 +221,7 @@ Widget bookItem(ReturnBook book) {
         ),
         Padding(
           padding: const EdgeInsets.only(
-            left: 10,
+            left: 8,
             bottom: 10,
           ),
           child: Column(
@@ -196,7 +247,7 @@ Widget bookItem(ReturnBook book) {
               ),
               Text(
                 book.formatedDate,
-                style: 13.sp(),
+                style: 13.sp(color: Colors.grey),
               )
             ],
           ),
