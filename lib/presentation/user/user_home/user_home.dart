@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:riverpod_test/data/user/model/author_model.dart';
-import 'package:riverpod_test/presentation/user_home/state/author_book_provider.dart';
+import 'package:riverpod_test/main.dart';
+import 'package:riverpod_test/presentation/user/author_detail/author_detail.dart';
+import 'package:riverpod_test/presentation/user/user_home/state/author_book_provider.dart';
 import 'package:riverpod_test/theme/app_text_style.dart';
 
 class UserHome extends ConsumerWidget {
@@ -46,11 +48,11 @@ class UserHome extends ConsumerWidget {
                         : Text('There is no authors for show'),
               ),
               SizedBox(
-                height: 20,
+                height: 10,
               ),
               Expanded(
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  padding: EdgeInsets.symmetric(horizontal: 5),
                   child: bookAuthorState.isLoading
                       ? Center(
                           child: SpinKitDualRing(
@@ -86,27 +88,32 @@ class UserHome extends ConsumerWidget {
 Widget authorCircle(AuthorModel author) {
   return Padding(
     padding: const EdgeInsets.only(top: 5, left: 10),
-    child: Column(
-      children: [
-        Container(
-          height: 50,
-          width: 50,
-          padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-          decoration: BoxDecoration(
-              border: Border.all(color: Colors.pinkAccent),
-              borderRadius: BorderRadius.circular(24),
-              image: DecorationImage(
-                  image: AssetImage('assets/images/cool4.png'),
-                  fit: BoxFit.cover)),
-        ),
-        SizedBox(
-          height: 5,
-        ),
-        Text(
-          author.name,
-          style: 12.sp(),
-        )
-      ],
+    child: InkWell(
+      onTap: () {
+        appnavigator.push(AuthorDetail(authorId: author.id));
+      },
+      child: Column(
+        children: [
+          Container(
+            height: 50,
+            width: 50,
+            padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+            decoration: BoxDecoration(
+                border: Border.all(color: Colors.pinkAccent),
+                borderRadius: BorderRadius.circular(24),
+                image: DecorationImage(
+                    image: AssetImage('assets/images/cool4.png'),
+                    fit: BoxFit.cover)),
+          ),
+          SizedBox(
+            height: 5,
+          ),
+          Text(
+            author.name,
+            style: 12.sp(),
+          )
+        ],
+      ),
     ),
   );
 }

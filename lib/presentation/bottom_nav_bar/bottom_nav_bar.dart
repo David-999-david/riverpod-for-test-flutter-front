@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:riverpod_test/presentation/user_home/user_home.dart';
+import 'package:riverpod_test/presentation/user/user_home/user_home.dart';
 import 'package:riverpod_test/presentation/bottom_nav_bar/state/nav_provider.dart';
 import 'package:riverpod_test/presentation/filter/filter.dart';
 import 'package:riverpod_test/presentation/home/home_screen.dart';
