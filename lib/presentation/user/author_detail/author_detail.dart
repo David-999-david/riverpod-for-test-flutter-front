@@ -98,6 +98,12 @@ class AuthorDetail extends ConsumerWidget {
 }
 
 Widget bookItem(TargetAuthorBook book) {
+  final bookImage = book.imageUrl;
+
+  final hasimage = bookImage != null && bookImage.isNotEmpty;
+
+  dynamic bg =
+      hasimage ? NetworkImage(bookImage) : AssetImage('assets/images/c5.png');
   return Container(
     decoration: BoxDecoration(
         color: Colors.white,
@@ -105,9 +111,10 @@ Widget bookItem(TargetAuthorBook book) {
         border: Border.all(color: Colors.black)),
     child: Column(
       children: [
-        Image(
-          image: AssetImage('assets/images/c5.png'),
-          fit: BoxFit.cover,
+        Container(
+          height: 188,
+          decoration: BoxDecoration(
+              image: DecorationImage(image: bg, fit: BoxFit.cover)),
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
@@ -116,7 +123,9 @@ Widget bookItem(TargetAuthorBook book) {
             children: [
               Text(
                 book.bookName,
-                style: 16.sp(),
+                softWrap: true,
+                overflow: TextOverflow.ellipsis,
+                style: 14.sp(),
               ),
               Text(
                 book.description,

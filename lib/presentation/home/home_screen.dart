@@ -191,6 +191,19 @@ class _HomeScreenState extends ConsumerState {
 }
 
 Widget bookItem(ReturnBook book) {
+  final bookImageUrl = book.imageUrl;
+
+  final hasImageUrl = bookImageUrl != null && bookImageUrl.isNotEmpty;
+
+  dynamic bg = hasImageUrl
+      ? Image.network(
+          bookImageUrl,
+          fit: BoxFit.cover,
+        )
+      : Image.asset(
+          'assets/images/cool4.png',
+          fit: BoxFit.cover,
+        );
   return Container(
     decoration: BoxDecoration(
         color: Colors.white,
@@ -206,10 +219,7 @@ Widget bookItem(ReturnBook book) {
           child: Stack(
             fit: StackFit.expand,
             children: [
-              Image.asset(
-                'assets/images/cool4.png',
-                fit: BoxFit.cover,
-              ),
+              bg,
               DecoratedBox(
                   decoration: BoxDecoration(
                       gradient: LinearGradient(colors: [
@@ -231,6 +241,8 @@ Widget bookItem(ReturnBook book) {
             children: [
               Text(
                 book.bookName,
+                softWrap: true,
+                overflow: TextOverflow.ellipsis,
                 style: 15.sp(),
               ),
               SizedBox(

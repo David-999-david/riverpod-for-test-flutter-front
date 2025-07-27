@@ -119,6 +119,13 @@ Widget authorCircle(AuthorModel author) {
 }
 
 Widget bookItem(BookWithAuthor book) {
+  final bookImage = book.imageUrl;
+
+  final hasBookImage = bookImage != null && bookImage.isNotEmpty;
+
+  dynamic bg = hasBookImage
+      ? NetworkImage(bookImage)
+      : AssetImage('assets/images/c5.png');
   return Container(
     decoration: BoxDecoration(
       color: Colors.white,
@@ -128,9 +135,12 @@ Widget bookItem(BookWithAuthor book) {
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Image(
-          image: AssetImage('assets/images/c5.png'),
-          fit: BoxFit.cover,
+        Container(
+          height: 184,
+          width: double.infinity,
+          decoration: BoxDecoration(
+            image: DecorationImage(image: bg, fit: BoxFit.cover),
+          ),
         ),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),

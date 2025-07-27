@@ -18,6 +18,7 @@ class BookWithAuthor {
   final int bookId;
   final String bookName;
   final String description;
+  final String? imageUrl;
   final DateTime createdAt;
   final int subCatId;
   final String subCategory;
@@ -30,6 +31,7 @@ class BookWithAuthor {
       required this.bookId,
       required this.bookName,
       required this.description,
+      required this.imageUrl,
       required this.createdAt,
       required this.subCatId,
       required this.subCategory,
@@ -45,6 +47,7 @@ class BookWithAuthor {
         bookId: json['bookId'] as int,
         bookName: json['bookName'] as String,
         description: json['description'] as String,
+        imageUrl: json['imageUrl'] as String?,
         createdAt: DateTime.parse(json['createdAt']),
         subCatId: json['subCatId'] as int,
         subCategory: json['subCategory'] as String,
@@ -77,6 +80,7 @@ class TargetAuthorBook {
   final int bookId;
   final String bookName;
   final String description;
+  final String? imageUrl;
   final DateTime createdAt;
   final int subCatId;
   final String subCategory;
@@ -87,6 +91,7 @@ class TargetAuthorBook {
       {required this.bookId,
       required this.bookName,
       required this.description,
+      required this.imageUrl,
       required this.createdAt,
       required this.subCatId,
       required this.subCategory,
@@ -100,6 +105,7 @@ class TargetAuthorBook {
         bookId: json['bookId'],
         bookName: json['bookName'],
         description: json['description'],
+        imageUrl: json['imageUrl'] as String?,
         createdAt: DateTime.parse(json['createdAt']),
         subCatId: json['subCatId'],
         subCategory: json['subCategory'],

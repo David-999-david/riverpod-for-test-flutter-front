@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -177,15 +176,18 @@ class _CreateBookState extends ConsumerState<CreateBook> {
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(8)),
                                   side: BorderSide(color: Colors.blue)),
-                              onPressed: () {
+                              onPressed: () async {
                                 if (!key.currentState!.validate()) return;
+
+                                final InsertBook insertBook = InsertBook(
+                                    category: category.text.trim(),
+                                    subCategory: subCategory.text.trim(),
+                                    bookName: bookName.text.trim(),
+                                    bookDesc: bookDesc.text.trim());
+
                                 ref
                                     .read(bookCreateProvider.notifier)
-                                    .createBook(InsertBook(
-                                        category: category.text.trim(),
-                                        subCategory: subCategory.text.trim(),
-                                        bookName: bookName.text.trim(),
-                                        bookDesc: bookDesc.text.trim()));
+                                    .createBook(insertBook, pickImage);
                               },
                               child: Text(
                                 'Confirm',
@@ -223,6 +225,7 @@ Widget _textformfield(
             borderSide: BorderSide(color: Colors.black))),
     validator: (value) {
       if (value == null || value.isEmpty) return '$label must not be empty';
+      return null;
     },
   );
 }

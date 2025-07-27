@@ -6,9 +6,9 @@ import 'package:riverpod_test/dio_client.dart';
 class BookRemote {
   final Dio _dio = DioClient.dio;
 
-  Future<BookModel> insertBook(InsertBook book) async {
+  Future<BookModel> insertBook(FormData form) async {
     try {
-      final response = await _dio.post(ApiUrl.createBook, data: book.toJson());
+      final response = await _dio.post(ApiUrl.createBook, data: form, options: Options(contentType: 'multipart/form-data'));
 
       final status = response.statusCode!;
 

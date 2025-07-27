@@ -48,14 +48,20 @@ class Book {
   final int bookId;
   final String bookName;
   final String bookDesc;
+  final String? imageUrl;
 
-  Book({required this.bookId, required this.bookName, required this.bookDesc});
+  Book(
+      {required this.bookId,
+      required this.bookName,
+      required this.bookDesc,
+      required this.imageUrl});
 
   factory Book.fromJson(Map<String, dynamic> json) {
     return Book(
         bookId: json['id'] as int,
         bookName: json['name'] as String,
-        bookDesc: json['description'] as String);
+        bookDesc: json['description'] as String,
+        imageUrl: json['image_url'] as String?);
   }
 }
 
@@ -66,6 +72,7 @@ class ReturnBook {
   final String subCategory;
   final String bookName;
   final String bookDesc;
+  final String? imageUrl;
   final DateTime created;
 
   ReturnBook(
@@ -75,6 +82,7 @@ class ReturnBook {
       required this.subCategory,
       required this.bookName,
       required this.bookDesc,
+      required this.imageUrl,
       required this.created});
 
   String get formatedDate => DateFormat('yyyy-MM-dd HH:mm').format(created);
@@ -87,6 +95,7 @@ class ReturnBook {
         subCategory: json['subCategory'] as String,
         bookName: json['bookName'] as String,
         bookDesc: json['bookDesc'] as String,
+        imageUrl: json['imageUrl'] as String?,
         created: DateTime.parse(json['createdTime'] as String));
   }
 }
