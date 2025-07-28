@@ -30,4 +30,6 @@ class ApiUrl {
   static const getAllAuthorsBooks = '/user/getAllAuthorsBooks';
 
   static const getBooksByAuthor = '/user/getBooksByAuthor';
+
+  static const getAllCateSubCate = '/author/allCateSubCate';
 }

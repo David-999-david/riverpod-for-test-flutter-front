@@ -1,10 +1,13 @@
 import 'dart:io';
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:riverpod_test/data/book/model/book_model.dart';
+import 'package:riverpod_test/data/book/model/category_sub_category.dart';
 import 'package:riverpod_test/main.dart';
+import 'package:riverpod_test/presentation/home/add/state/category_subCate_provider.dart';
 import 'package:riverpod_test/presentation/home/add/state/pick_image_provider.dart';
 import 'package:riverpod_test/presentation/home/state/book_provider.dart';
 import 'package:riverpod_test/theme/app_text_style.dart';
@@ -35,6 +38,10 @@ class _CreateBookState extends ConsumerState<CreateBook> {
     bookDesc = TextEditingController();
   }
 
+  CategoryModel? selectedCategory;
+
+  SubCategoryModel? selectedSub;
+
   @override
   Widget build(BuildContext context) {
     ref.listen<AsyncValue<BookModel?>>(bookCreateProvider, (prev, next) {
@@ -59,6 +66,29 @@ class _CreateBookState extends ConsumerState<CreateBook> {
     final pickImage = pickImageState;
 
     bool hasPickImage = pickImage != null;
+
+    final catSubCatState = ref.watch(cateSubCateProvider);
+
+    if (catSubCatState.isLoading) {
+      return Center(
+        child: SpinKitDualRing(
+          color: Colors.yellow,
+          size: 15,
+        ),
+      );
+    }
+
+    final catSubCat = catSubCatState.value!;
+
+    final List<CategoryModel> categoryList = catSubCat.categories;
+
+    final List<SubCategoryModel> subCategoryList = catSubCat.subCategories;
+
+    final filterSub = (selectedCategory == null)
+        ? subCategoryList
+        : subCategoryList
+            .where((s) => s.cateId == selectedCategory!.id)
+            .toList();
 
     dynamic bg = hasPickImage
         ? FileImage(
@@ -136,6 +166,43 @@ class _CreateBookState extends ConsumerState<CreateBook> {
                           ]),
                       SizedBox(
                         height: 20,
+                      ),
+                      catSubCatState.isLoading
+                          ? SpinKitDualRing(
+                              color: Colors.yellow,
+                              size: 10,
+                            )
+                          : Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Expanded(
+                                    child: categoryDropdownSearch(
+                                        categoryList,
+                                        selectedCategory,
+                                        (c) => setState(() {
+                                              selectedCategory = c;
+                                              category.text = selectedCategory!
+                                                  .name
+                                                  .toUpperCase();
+                                              selectedSub = null;
+                                            }))),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Expanded(
+                                    child: subCategoryDropDownSearch(
+                                        filterSub,
+                                        selectedSub,
+                                        (s) => setState(() {
+                                              selectedSub = s;
+                                              subCategory.text = selectedSub!
+                                                  .name
+                                                  .toUpperCase();
+                                            })))
+                              ],
+                            ),
+                      SizedBox(
+                        height: 10,
                       ),
                       Row(
                         mainAxisSize: MainAxisSize.min,
@@ -227,5 +294,139 @@ Widget _textformfield(
       if (value == null || value.isEmpty) return '$label must not be empty';
       return null;
     },
+  );
+}
+
+Widget categoryDropdownSearch(List<CategoryModel> categories,
+    CategoryModel? selected, ValueChanged<CategoryModel?> onChanged) {
+  return DropdownSearch<CategoryModel>(
+    items: (String filter, _) {
+      if (filter.isEmpty) return categories;
+      return categories
+          .where((c) => c.name.toLowerCase().contains(filter.toLowerCase()))
+          .toList();
+    },
+    dropdownBuilder: (context, selectedItem) {
+      if (selectedItem == null) return SizedBox.shrink();
+      return Text(
+        selectedItem.name.toUpperCase(),
+        style: 14.sp(),
+      );
+    },
+    selectedItem: selected,
+    onChanged: onChanged,
+    decoratorProps: DropDownDecoratorProps(
+        decoration: InputDecoration(
+            filled: true,
+            fillColor: Colors.white,
+            hintText: 'Tap to select Category',
+            hintStyle: 14.sp(),
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+            contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8))),
+    popupProps: PopupProps.menu(
+      showSearchBox: true,
+      searchFieldProps: TextFieldProps(
+          decoration: InputDecoration(
+              hintText: 'Search categories...',
+              hintStyle: 14.sp(),
+              border:
+                  OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+              focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(color: Colors.blue)),
+              contentPadding: EdgeInsets.all(8))),
+      itemBuilder: (context, item, isDisabled, isSelected) {
+        return ListTile(
+          selected: isSelected,
+          title: Text(
+            item.name.toUpperCase(),
+            style: 14.sp(),
+          ),
+        );
+      },
+      emptyBuilder: (context, _) {
+        return Center(
+          child: Text('No categories found'),
+        );
+      },
+      loadingBuilder: (context, _) {
+        return Center(
+          child: SpinKitDualRing(
+            color: Colors.yellow,
+            size: 10,
+          ),
+        );
+      },
+    ),
+    itemAsString: (item) {
+      return item.name;
+    },
+    compareFn: (item1, item2) => item1.id == item2.id,
+  );
+}
+
+Widget subCategoryDropDownSearch(List<SubCategoryModel> subCategories,
+    SubCategoryModel? selected, ValueChanged<SubCategoryModel?> onChanged) {
+  return DropdownSearch<SubCategoryModel>(
+    items: (String filter, _) {
+      if (filter.isEmpty) return subCategories;
+      return subCategories
+          .where((s) => s.name.toLowerCase().contains(filter.toLowerCase()))
+          .toList();
+    },
+    dropdownBuilder: (context, selectedItem) {
+      if (selectedItem == null) return SizedBox.shrink();
+      return Text(
+        selectedItem.name.toUpperCase(),
+        style: 14.sp(),
+      );
+    },
+    selectedItem: selected,
+    onChanged: onChanged,
+    decoratorProps: DropDownDecoratorProps(
+      decoration: InputDecoration(
+          filled: true,
+          fillColor: Colors.white,
+          hintText: 'Select a Sub-category',
+          hintStyle: 14.sp(),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+          contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8)),
+    ),
+    popupProps: PopupProps.menu(
+      showSearchBox: true,
+      searchFieldProps: TextFieldProps(
+          decoration: InputDecoration(
+              hintText: 'Search Sub-category...',
+              hintStyle: 14.sp(),
+              border:
+                  OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+              focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(color: Colors.blue)))),
+      itemBuilder: (context, item, isDisabled, isSelected) {
+        return ListTile(
+          selected: isSelected,
+          title: Text(
+            item.name.toUpperCase(),
+            style: 14.sp(),
+          ),
+        );
+      },
+      emptyBuilder: (context, searchEntry) {
+        return Center(
+          child: Text('No Sub-Category found'),
+        );
+      },
+      loadingBuilder: (context, searchEntry) {
+        return Center(
+          child: SpinKitDualRing(
+            color: Colors.yellow,
+            size: 15,
+          ),
+        );
+      },
+    ),
+    itemAsString: (item) => item.name,
+    compareFn: (item1, item2) => item1.id == item2.id,
   );
 }

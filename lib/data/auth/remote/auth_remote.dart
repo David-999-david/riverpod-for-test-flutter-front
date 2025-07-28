@@ -9,7 +9,6 @@ import 'package:riverpod_test/local.dart';
 import 'package:riverpod_test/main.dart';
 import 'package:riverpod_test/presentation/auth/login/login_screen.dart';
 import 'package:riverpod_test/presentation/bottom_nav_bar/bottom_nav_bar.dart';
-import 'package:riverpod_test/presentation/home/home_screen.dart';
 
 class AuthRemote {
   final Dio _dio = DioClient.dio;
