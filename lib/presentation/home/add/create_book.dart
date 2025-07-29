@@ -34,6 +34,9 @@ class _CreateBookState extends ConsumerState<CreateBook> {
     super.initState();
     category = TextEditingController();
     subCategory = TextEditingController();
+    subCategory.addListener(() {
+      setState(() {});
+    });
     bookName = TextEditingController();
     bookDesc = TextEditingController();
   }
@@ -42,13 +45,22 @@ class _CreateBookState extends ConsumerState<CreateBook> {
 
   SubCategoryModel? selectedSub;
 
+  List<String> confirmSubList = [];
+
+  void getSubCate(String sub) {
+    confirmSubList.add(sub);
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     ref.listen<AsyncValue<BookModel?>>(bookCreateProvider, (prev, next) {
       next.when(
           data: (book) {
+            ref.read(pickimageProvider.notifier).clear();
             ScaffoldMessenger.of(context)
                 .showSnackBar(SnackBar(content: Text('A new book created')));
+
             ref.read(bookfetchProvider.notifier).fetchAll();
 
             appnavigator.pop();
@@ -67,28 +79,28 @@ class _CreateBookState extends ConsumerState<CreateBook> {
 
     bool hasPickImage = pickImage != null;
 
-    final catSubCatState = ref.watch(cateSubCateProvider);
+    // final catSubCatState = ref.watch(cateSubCateProvider);
 
-    if (catSubCatState.isLoading) {
-      return Center(
-        child: SpinKitDualRing(
-          color: Colors.yellow,
-          size: 15,
-        ),
-      );
-    }
+    // if (catSubCatState.isLoading) {
+    //   return Center(
+    //     child: SpinKitDualRing(
+    //       color: Colors.yellow,
+    //       size: 15,
+    //     ),
+    //   );
+    // }
 
-    final catSubCat = catSubCatState.value!;
+    // final catSubCat = catSubCatState.value!;
 
-    final List<CategoryModel> categoryList = catSubCat.categories;
+    // final List<CategoryModel> categoryList = catSubCat.categories;
 
-    final List<SubCategoryModel> subCategoryList = catSubCat.subCategories;
+    // final List<SubCategoryModel> subCategoryList = catSubCat.subCategories;
 
-    final filterSub = (selectedCategory == null)
-        ? subCategoryList
-        : subCategoryList
-            .where((s) => s.cateId == selectedCategory!.id)
-            .toList();
+    // final filterSub = (selectedCategory == null)
+    //     ? subCategoryList
+    //     : subCategoryList
+    //         .where((s) => s.cateId == selectedCategory!.id)
+    //         .toList();
 
     dynamic bg = hasPickImage
         ? FileImage(
@@ -110,6 +122,7 @@ class _CreateBookState extends ConsumerState<CreateBook> {
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: SingleChildScrollView(
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Row(
@@ -167,43 +180,43 @@ class _CreateBookState extends ConsumerState<CreateBook> {
                       SizedBox(
                         height: 20,
                       ),
-                      catSubCatState.isLoading
-                          ? SpinKitDualRing(
-                              color: Colors.yellow,
-                              size: 10,
-                            )
-                          : Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Expanded(
-                                    child: categoryDropdownSearch(
-                                        categoryList,
-                                        selectedCategory,
-                                        (c) => setState(() {
-                                              selectedCategory = c;
-                                              category.text = selectedCategory!
-                                                  .name
-                                                  .toUpperCase();
-                                              selectedSub = null;
-                                            }))),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Expanded(
-                                    child: subCategoryDropDownSearch(
-                                        filterSub,
-                                        selectedSub,
-                                        (s) => setState(() {
-                                              selectedSub = s;
-                                              subCategory.text = selectedSub!
-                                                  .name
-                                                  .toUpperCase();
-                                            })))
-                              ],
-                            ),
-                      SizedBox(
-                        height: 10,
-                      ),
+                      // catSubCatState.isLoading
+                      //     ? SpinKitDualRing(
+                      //         color: Colors.yellow,
+                      //         size: 10,
+                      //       )
+                      //     : Row(
+                      //         mainAxisSize: MainAxisSize.min,
+                      //         children: [
+                      //           Expanded(
+                      //               child: categoryDropdownSearch(
+                      //                   categoryList,
+                      //                   selectedCategory,
+                      //                   (c) => setState(() {
+                      //                         selectedCategory = c;
+                      //                         category.text = selectedCategory!
+                      //                             .name
+                      //                             .toUpperCase();
+                      //                         selectedSub = null;
+                      //                       }))),
+                      //           SizedBox(
+                      //             width: 10,
+                      //           ),
+                      //           Expanded(
+                      //               child: subCategoryDropDownSearch(
+                      //                   filterSub,
+                      //                   selectedSub,
+                      //                   (s) => setState(() {
+                      //                         selectedSub = s;
+                      //                         subCategory.text = selectedSub!
+                      //                             .name
+                      //                             .toUpperCase();
+                      //                       })))
+                      //         ],
+                      //       ),
+                      // SizedBox(
+                      //   height: 10,
+                      // ),
                       Row(
                         mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -215,12 +228,47 @@ class _CreateBookState extends ConsumerState<CreateBook> {
                             width: 10,
                           ),
                           Expanded(
-                              child: _textformfield(subCategory, 'Sub-category',
-                                  1, 'Sub-category')),
+                              child: _subCatTextformfield(
+                                  subCategory,
+                                  'Sub-category',
+                                  1,
+                                  'Sub-category',
+                                  getSubCate,
+                                  confirmSubList)),
                         ],
                       ),
                       SizedBox(
-                        height: 20,
+                        height: 10,
+                      ),
+                      confirmSubList.isNotEmpty
+                          ? Wrap(
+                              alignment: WrapAlignment.start,
+                              spacing: 5,
+                              runSpacing: 5,
+                              children: confirmSubList.map((s) {
+                                return InputChip(
+                                  onDeleted: () {
+                                    confirmSubList.remove(s);
+                                    setState(() {});
+                                  },
+                                  label: Text(
+                                    s,
+                                  ),
+                                  labelStyle: 14.sp(color: Colors.black),
+                                  side: BorderSide(color: Colors.black),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8)),
+                                );
+                              }).toList(),
+                            )
+                          : Center(
+                              child: Text(
+                                'Please confirm your add sub-categories in Sub-Category Text Field',
+                                style: 12.sp(color: Colors.white),
+                              ),
+                            ),
+                      SizedBox(
+                        height: 10,
                       ),
                       _textformfield(bookName, 'Book-name', 2, 'Book-name'),
                       SizedBox(
@@ -236,30 +284,34 @@ class _CreateBookState extends ConsumerState<CreateBook> {
                               color: Colors.yellow,
                               size: 20,
                             )
-                          : ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 8, vertical: 3),
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(8)),
-                                  side: BorderSide(color: Colors.blue)),
-                              onPressed: () async {
-                                if (!key.currentState!.validate()) return;
+                          : Center(
+                              child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 8, vertical: 3),
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(8)),
+                                      side: BorderSide(color: Colors.blue)),
+                                  onPressed: () async {
+                                    if (!key.currentState!.validate()) return;
 
-                                final InsertBook insertBook = InsertBook(
-                                    category: category.text.trim(),
-                                    subCategory: subCategory.text.trim(),
-                                    bookName: bookName.text.trim(),
-                                    bookDesc: bookDesc.text.trim());
+                                    final InsertBook insertBook = InsertBook(
+                                        category:
+                                            category.text.trim().toUpperCase(),
+                                        subCategory: confirmSubList,
+                                        bookName: bookName.text.trim(),
+                                        bookDesc: bookDesc.text.trim());
 
-                                ref
-                                    .read(bookCreateProvider.notifier)
-                                    .createBook(insertBook, pickImage);
-                              },
-                              child: Text(
-                                'Confirm',
-                                style: 12.sp(),
-                              ))
+                                    ref
+                                        .read(bookCreateProvider.notifier)
+                                        .createBook(insertBook, pickImage);
+                                  },
+                                  child: Text(
+                                    'Confirm',
+                                    style: 12.sp(),
+                                  )),
+                            )
                     ],
                   ),
                 ),
@@ -275,6 +327,7 @@ Widget _textformfield(
   return TextFormField(
     controller: ctrl,
     maxLines: maxLine,
+    autovalidateMode: AutovalidateMode.onUserInteraction,
     style: 15.sp(),
     decoration: InputDecoration(
         hintText: hint,
@@ -292,6 +345,47 @@ Widget _textformfield(
             borderSide: BorderSide(color: Colors.black))),
     validator: (value) {
       if (value == null || value.isEmpty) return '$label must not be empty';
+      return null;
+    },
+  );
+}
+
+Widget _subCatTextformfield(
+    TextEditingController ctrl,
+    String hint,
+    int maxLine,
+    String label,
+    ValueChanged<String> onChanged,
+    List<String> confirmSubList) {
+  return TextFormField(
+    controller: ctrl,
+    maxLines: maxLine,
+    autovalidateMode: AutovalidateMode.onUserInteraction,
+    style: 15.sp(),
+    decoration: InputDecoration(
+        hintText: hint,
+        hintStyle: 15.sp(),
+        filled: true,
+        fillColor: Colors.white,
+        suffixIcon: ctrl.text.isNotEmpty
+            ? IconButton(
+                onPressed: () {
+                  onChanged(ctrl.text.toUpperCase());
+                  ctrl.clear();
+                },
+                icon: Icon(Icons.arrow_right))
+            : null,
+        border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: BorderSide(color: Colors.black)),
+        focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: BorderSide(color: Colors.blue)),
+        enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: BorderSide(color: Colors.black))),
+    validator: (value) {
+      if (confirmSubList.isEmpty) return 'Make a tap on icon for confirm';
       return null;
     },
   );

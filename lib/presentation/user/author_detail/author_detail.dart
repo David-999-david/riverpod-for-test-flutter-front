@@ -21,6 +21,7 @@ class AuthorDetail extends ConsumerWidget {
         body: CustomScrollView(
           slivers: [
             SliverAppBar(
+              backgroundColor: Colors.black,
               automaticallyImplyLeading: false,
               expandedHeight: 300,
               pinned: true,
@@ -89,7 +90,9 @@ class AuthorDetail extends ConsumerWidget {
                     : SliverFillRemaining(
                         child: Center(
                           child: Text(
-                              'There is no books from ${author!.authorName}'),
+                            'There is no book from ${author!.authorName}',
+                            style: 15.sp(),
+                          ),
                         ),
                       )
           ],
@@ -140,17 +143,28 @@ Widget bookItem(TargetAuthorBook book) {
               Row(
                 children: [
                   Text(
-                    book.category,
+                    book.category ?? 'Unknown',
                     style: 13.sp(),
                   ),
                   Text(
                     ' / ',
                     style: 12.sp(color: Colors.grey),
                   ),
-                  Text(
-                    book.subCategory,
-                    style: 13.sp(),
-                  )
+                  Expanded(
+                      child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: book.subCategories.map((s) {
+                        return Padding(
+                          padding: const EdgeInsets.only(right: 4),
+                          child: Text(
+                            s.subCategory,
+                            style: 12.sp(),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  ))
                 ],
               )
             ],

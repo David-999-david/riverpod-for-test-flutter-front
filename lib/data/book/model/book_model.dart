@@ -2,7 +2,7 @@ import 'package:intl/intl.dart';
 
 class InsertBook {
   final String category;
-  final String subCategory;
+  final List<String> subCategory;
   final String bookName;
   final String bookDesc;
 
@@ -15,7 +15,7 @@ class InsertBook {
   Map<String, dynamic> toJson() {
     return {
       'category': category,
-      'subCategory': subCategory,
+      'subCategories': subCategory,
       'name': bookName,
       'description': bookDesc
     };
@@ -25,7 +25,7 @@ class InsertBook {
 class BookModel {
   final String authorName;
   final String category;
-  final String subCategory;
+  final List<String> subCategory;
   final Book book;
 
   BookModel(
@@ -39,7 +39,9 @@ class BookModel {
     return BookModel(
         authorName: json['authorName'] as String,
         category: json['categoryName'] as String,
-        subCategory: json['subCateName'] as String,
+        subCategory: (json['subCateNames'] as List<dynamic>)
+            .map((s) => s as String)
+            .toList(),
         book: Book.fromJson(book));
   }
 }
@@ -69,7 +71,7 @@ class ReturnBook {
   final int bookId;
   final String authorName;
   final String category;
-  final String subCategory;
+  final List<String> subCategories;
   final String bookName;
   final String bookDesc;
   final String? imageUrl;
@@ -79,7 +81,7 @@ class ReturnBook {
       {required this.bookId,
       required this.authorName,
       required this.category,
-      required this.subCategory,
+      required this.subCategories,
       required this.bookName,
       required this.bookDesc,
       required this.imageUrl,
@@ -92,10 +94,12 @@ class ReturnBook {
         bookId: json['bookId'] as int,
         authorName: json['authorName'] as String,
         category: json['category'] as String,
-        subCategory: json['subCategory'] as String,
+        subCategories:
+            List<String>.from(json['subCategories'] as List<dynamic>),
         bookName: json['bookName'] as String,
         bookDesc: json['bookDesc'] as String,
         imageUrl: json['imageUrl'] as String?,
         created: DateTime.parse(json['createdTime'] as String));
   }
 }
+

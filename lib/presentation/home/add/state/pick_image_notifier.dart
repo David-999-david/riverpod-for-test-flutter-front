@@ -9,6 +9,8 @@ import 'package:permission_handler/permission_handler.dart';
 class PickImageNotifier extends StateNotifier<XFile?> {
   PickImageNotifier() : super(null);
 
+  void clear() => state = null;
+
   Future<bool> reqPermCameraGall(ImageSource source) async {
     if (source == ImageSource.camera) {
       final status = await Permission.camera.status;

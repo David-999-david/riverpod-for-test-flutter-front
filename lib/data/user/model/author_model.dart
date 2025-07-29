@@ -20,8 +20,7 @@ class BookWithAuthor {
   final String description;
   final String? imageUrl;
   final DateTime createdAt;
-  final int subCatId;
-  final String subCategory;
+  final List<ReturnSubCategory> subCategories;
   final int categoryId;
   final String category;
 
@@ -33,14 +32,16 @@ class BookWithAuthor {
       required this.description,
       required this.imageUrl,
       required this.createdAt,
-      required this.subCatId,
-      required this.subCategory,
+      required this.subCategories,
       required this.categoryId,
       required this.category});
 
   String get formated => DateFormat('yyyy-MM-dd HH:mm').format(createdAt);
 
   factory BookWithAuthor.fromJson(Map<String, dynamic> json) {
+    final subCategories = (json['subCategories'] as List<dynamic>)
+        .map((s) => ReturnSubCategory.fromJson(s))
+        .toList();
     return BookWithAuthor(
         authorId: json['authorId'] as String,
         authorName: json['authorName'] as String,
@@ -49,10 +50,21 @@ class BookWithAuthor {
         description: json['description'] as String,
         imageUrl: json['imageUrl'] as String?,
         createdAt: DateTime.parse(json['createdAt']),
-        subCatId: json['subCatId'] as int,
-        subCategory: json['subCategory'] as String,
+        subCategories: subCategories,
         categoryId: json['categoryId'] as int,
         category: json['category'] as String);
+  }
+}
+
+class ReturnSubCategory {
+  final int subCatId;
+  final String subCategory;
+
+  ReturnSubCategory({required this.subCatId, required this.subCategory});
+
+  factory ReturnSubCategory.fromJson(Map<String, dynamic> json) {
+    return ReturnSubCategory(
+        subCatId: json['subCatId'], subCategory: json['subCategory']);
   }
 }
 
@@ -82,10 +94,9 @@ class TargetAuthorBook {
   final String description;
   final String? imageUrl;
   final DateTime createdAt;
-  final int subCatId;
-  final String subCategory;
-  final int categoryId;
-  final String category;
+  final int? categoryId;
+  final String? category;
+  final List<SubModel> subCategories;
 
   TargetAuthorBook(
       {required this.bookId,
@@ -93,23 +104,36 @@ class TargetAuthorBook {
       required this.description,
       required this.imageUrl,
       required this.createdAt,
-      required this.subCatId,
-      required this.subCategory,
       required this.categoryId,
-      required this.category});
+      required this.category,
+      required this.subCategories});
 
   String get formated => DateFormat('yyyy-MM-dd HH:mm').format(createdAt);
 
   factory TargetAuthorBook.fromJson(Map<String, dynamic> json) {
+    final subCategories = (json['subCategories'] as List<dynamic>)
+        .map((e) => SubModel.fromJson(e))
+        .toList();
     return TargetAuthorBook(
         bookId: json['bookId'],
         bookName: json['bookName'],
         description: json['description'],
         imageUrl: json['imageUrl'] as String?,
         createdAt: DateTime.parse(json['createdAt']),
-        subCatId: json['subCatId'],
-        subCategory: json['subCategory'],
-        categoryId: json['categoryId'],
-        category: json['category']);
+        categoryId: json['categoryId'] as int?,
+        category: json['category'] as String?,
+        subCategories: subCategories);
+  }
+}
+
+class SubModel {
+  final int subCatId;
+  final String subCategory;
+
+  SubModel({required this.subCatId, required this.subCategory});
+
+  factory SubModel.fromJson(Map<String, dynamic> json) {
+    return SubModel(
+        subCatId: json['subCatId'], subCategory: json['subCategory']);
   }
 }

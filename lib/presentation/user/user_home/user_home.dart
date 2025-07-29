@@ -45,7 +45,10 @@ class UserHome extends ConsumerWidget {
                               return authorCircle(author);
                             },
                           )
-                        : Text('There is no authors for show'),
+                        : Text(
+                            'There is no authors for show',
+                            style: 14.sp(),
+                          ),
               ),
               SizedBox(
                 height: 10,
@@ -75,7 +78,10 @@ class UserHome extends ConsumerWidget {
                               },
                             )
                           : Center(
-                              child: Text('There is no books'),
+                              child: Text(
+                                'There is no books',
+                                style: 14.sp(),
+                              ),
                             ),
                 ),
               )
@@ -149,10 +155,14 @@ Widget bookItem(BookWithAuthor book) {
             children: [
               Text(
                 book.authorName,
+                softWrap: true,
+                overflow: TextOverflow.ellipsis,
                 style: 15.sp(color: Colors.black),
               ),
               Text(
                 book.bookName,
+                softWrap: true,
+                overflow: TextOverflow.ellipsis,
                 style: 12.sp(),
               ),
               Text(
@@ -177,13 +187,28 @@ Widget bookItem(BookWithAuthor book) {
                       ' / ',
                       style: 12.sp(color: Colors.grey),
                     ),
-                    Text(
-                      book.subCategory,
-                      style: 13.sp(),
+                    Expanded(
+                      child: SizedBox(
+                        height: 20,
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: book.subCategories
+                                .map((s) => Padding(
+                                      padding: EdgeInsets.only(right: 4),
+                                      child: Text(
+                                        s.subCategory,
+                                        style: 12.sp(),
+                                      ),
+                                    ))
+                                .toList(),
+                          ),
+                        ),
+                      ),
                     )
                   ],
                 ),
-              )
+              ),
             ],
           ),
         )

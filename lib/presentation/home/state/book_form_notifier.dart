@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http_parser/http_parser.dart';
@@ -14,6 +16,7 @@ class BookFormNotifier extends StateNotifier<AsyncValue<BookModel?>> {
 
     try {
       final Map<String, dynamic> map = book.toJson();
+      map['subCategories'] = jsonEncode(map['subCategories']);
 
       if (image != null) {
         final mimeType = lookupMimeType(image.path) ?? 'image/jpeg';

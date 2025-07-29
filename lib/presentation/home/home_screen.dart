@@ -179,9 +179,12 @@ class _HomeScreenState extends ConsumerState {
                     )
                   : SliverToBoxAdapter(
                       child: Center(
-                          child: Text(
-                        'There is no book',
-                        style: 17.sp(),
+                          child: Padding(
+                        padding: const EdgeInsets.only(top: 130),
+                        child: Text(
+                          'There is no book',
+                          style: 17.sp(),
+                        ),
                       )),
                     ),
         ],
