@@ -15,7 +15,9 @@ class UserHome extends ConsumerWidget {
     final authorList = fetchAuthorState.value;
 
     final bookAuthorState = ref.watch(bookAuthorListProvier);
-    final bookAuthorList = bookAuthorState.value;
+    final pageWithbookList = bookAuthorState.value;
+
+    final bookAuthorList = pageWithbookList?.books;
 
     return Scaffold(
         backgroundColor: Color.fromARGB(255, 209, 209, 211),
@@ -79,7 +81,7 @@ class UserHome extends ConsumerWidget {
                             )
                           : Center(
                               child: Text(
-                                'There is no books',
+                                'Nothing for show....',
                                 style: 14.sp(),
                               ),
                             ),

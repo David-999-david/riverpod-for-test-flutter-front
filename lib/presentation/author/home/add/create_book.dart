@@ -7,9 +7,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:riverpod_test/data/book/model/book_model.dart';
 import 'package:riverpod_test/data/book/model/category_sub_category.dart';
 import 'package:riverpod_test/main.dart';
-import 'package:riverpod_test/presentation/home/add/state/category_subCate_provider.dart';
-import 'package:riverpod_test/presentation/home/add/state/pick_image_provider.dart';
-import 'package:riverpod_test/presentation/home/state/book_provider.dart';
+import 'package:riverpod_test/presentation/author/home/add/state/pick_image_provider.dart';
+import 'package:riverpod_test/presentation/author/home/state/book_provider.dart';
 import 'package:riverpod_test/theme/app_text_style.dart';
 
 class CreateBook extends ConsumerStatefulWidget {
@@ -61,7 +60,7 @@ class _CreateBookState extends ConsumerState<CreateBook> {
             ScaffoldMessenger.of(context)
                 .showSnackBar(SnackBar(content: Text('A new book created')));
 
-            ref.read(bookfetchProvider.notifier).fetchAll();
+            ref.read(bookfetchProvider(6).notifier).fetchAll();
 
             appnavigator.pop();
           },

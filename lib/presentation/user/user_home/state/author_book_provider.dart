@@ -7,5 +7,6 @@ final authorListProvider =
     StateNotifierProvider<AuthorListNotifier, AsyncValue<List<AuthorModel>>>(
         (ref) => AuthorListNotifier());
 
-final bookAuthorListProvier = StateNotifierProvider<BookAuthorListNotifier,
-    AsyncValue<List<BookWithAuthor>>>((ref) => BookAuthorListNotifier());
+final bookAuthorListProvier =
+    StateNotifierProvider<BookAuthorListNotifier, AsyncValue<PageWithBookList>>(
+        (ref) => BookAuthorListNotifier());

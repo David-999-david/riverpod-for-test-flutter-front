@@ -27,9 +27,10 @@ class BookRemote {
     }
   }
 
-  Future<List<ReturnBook>> fetchAllBooksAuthor() async {
+  Future<List<ReturnBook>> fetchAllBooksAuthor(int limit, int page) async {
     try {
-      final response = await _dio.get(ApiUrl.fetAllBook);
+      final response = await _dio.get(ApiUrl.fetAllBook,
+          queryParameters: {'limit': limit, 'page': page});
 
       final status = response.statusCode!;
 

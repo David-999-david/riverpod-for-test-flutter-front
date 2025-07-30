@@ -11,7 +11,7 @@ import 'package:riverpod_test/presentation/auth/login/login_screen.dart';
 import 'package:riverpod_test/presentation/auth/register/register_screen.dart';
 import 'package:riverpod_test/presentation/bottom_nav_bar/bottom_nav_bar.dart';
 import 'package:riverpod_test/presentation/filter/filter.dart';
-import 'package:riverpod_test/presentation/home/home_screen.dart';
+import 'package:riverpod_test/presentation/author/home/home_screen.dart';
 import 'package:riverpod_test/presentation/search_screen/search.dart';
 import 'package:riverpod_test/presentation/setting/setting.dart';
 import 'package:riverpod_test/presentation/splash_screen/splash_screen.dart';

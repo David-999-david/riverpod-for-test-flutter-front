@@ -12,6 +12,27 @@ class AuthorModel {
   }
 }
 
+class PageWithBookList {
+  final List<BookWithAuthor> books;
+  final int totalCounts;
+  final int totalPage;
+
+  PageWithBookList(
+      {required this.books,
+      required this.totalCounts,
+      required this.totalPage});
+
+  factory PageWithBookList.fromJson(Map<String, dynamic> json) {
+    final books = (json['books'] as List<dynamic>)
+        .map((b) => BookWithAuthor.fromJson(b))
+        .toList();
+    return PageWithBookList(
+        books: books,
+        totalCounts: json['totalCounts'],
+        totalPage: json['totalPage']);
+  }
+}
+
 class BookWithAuthor {
   final String authorId;
   final String authorName;

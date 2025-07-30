@@ -44,16 +44,17 @@ class UserRemote {
     }
   }
 
-  Future<List<BookWithAuthor>> getAllAuthorsBooks() async {
+  Future<PageWithBookList> getAllAuthorsBooks(int limit, int page) async {
     try {
-      final response = await _dio.get(ApiUrl.getAllAuthorsBooks);
+      final response = await _dio.get(ApiUrl.getAllAuthorsBooks,
+          queryParameters: {'limit': limit, 'page': page});
 
       final status = response.statusCode!;
 
       if (status >= 200 && status < 300) {
-        final data = response.data['data'] as List<dynamic>;
+        final data = response.data['data'] as Map<String, dynamic>;
 
-        return data.map((b) => BookWithAuthor.fromJson(b)).toList();
+        return PageWithBookList.fromJson(data);
       } else {
         throw Exception(
             'Error => status=$status, message : ${response.data['message']}');

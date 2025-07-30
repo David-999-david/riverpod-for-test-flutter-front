@@ -3,9 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:riverpod_test/data/book/model/book_model.dart';
 import 'package:riverpod_test/main.dart';
-import 'package:riverpod_test/presentation/home/add/create_book.dart';
-import 'package:riverpod_test/presentation/home/state/book_form_notifier.dart';
-import 'package:riverpod_test/presentation/home/state/book_provider.dart';
+import 'package:riverpod_test/presentation/author/all_book/view_all_book.dart';
+import 'package:riverpod_test/presentation/author/home/add/create_book.dart';
+import 'package:riverpod_test/presentation/author/home/state/book_provider.dart';
 import 'package:riverpod_test/presentation/setting/state/user_provider.dart';
 import 'package:riverpod_test/theme/app_text_style.dart';
 
@@ -27,7 +27,7 @@ class _HomeScreenState extends ConsumerState {
 
   @override
   Widget build(BuildContext context) {
-    final fetchState = ref.watch(bookfetchProvider);
+    final fetchState = ref.watch(bookfetchProvider(6));
     final book = fetchState.value;
 
     final userState = ref.watch(userProvider);
@@ -84,73 +84,37 @@ class _HomeScreenState extends ConsumerState {
             ),
           ),
           SliverPadding(
-            padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-            sliver: SliverToBoxAdapter(
-                child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        fixedSize: Size(50, 40),
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            side: BorderSide(color: Colors.blue))),
-                    onPressed: () {
+              padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+              sliver: SliverGrid(
+                  delegate: SliverChildListDelegate([
+                    actionButton(() {
                       appnavigator.push(CreateBook());
-                    },
-                    child: Text('ADD')),
-                ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        fixedSize: Size(50, 40),
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            side: BorderSide(color: Colors.blue))),
-                    onPressed: () {
+                    }, 'Create New', Icons.note_add_outlined, 14.sp(),
+                        Colors.blue),
+                    actionButton(() {
+                      appnavigator.push(ViewAllBook());
+                    }, 'View All', Icons.book, 14.sp(), Colors.grey),
+                    actionButton(() {
                       appnavigator.push(CreateBook());
-                    },
-                    child: Text('EDIT')),
-                ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        fixedSize: Size(50, 40),
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            side: BorderSide(color: Colors.blue))),
-                    onPressed: () {
+                    }, 'Edit', Icons.edit, 14.sp(), Colors.blue),
+                    actionButton(() {
                       appnavigator.push(CreateBook());
-                    },
-                    child: Text('Do')),
-                ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        fixedSize: Size(50, 40),
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            side: BorderSide(color: Colors.blue))),
-                    onPressed: () {
-                      appnavigator.push(CreateBook());
-                    },
-                    child: Text('add')),
-                ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        fixedSize: Size(50, 40),
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            side: BorderSide(color: Colors.blue))),
-                    onPressed: () {
-                      appnavigator.push(CreateBook());
-                    },
-                    child: Text('add')),
-              ],
-            )),
+                    }, 'Upload', Icons.drive_folder_upload_outlined, 14.sp(),
+                        const Color.fromARGB(255, 224, 213, 109))
+                  ]),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 4,
+                      mainAxisSpacing: 5,
+                      crossAxisSpacing: 12,
+                      mainAxisExtent: 60))),
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 8, top: 7, bottom: 5),
+              child: Text(
+                'Last Updated Book...',
+                style: 16.sp(color: Colors.black),
+              ),
+            ),
           ),
           fetchState.isLoading
               ? SliverFillRemaining(
@@ -168,7 +132,7 @@ class _HomeScreenState extends ConsumerState {
                       sliver: SliverGrid(
                           delegate: SliverChildBuilderDelegate(
                               childCount: book.length, (context, index) {
-                            return bookItem(book[index]);
+                            return bookItemAuthor(book[index]);
                           }),
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
@@ -193,7 +157,26 @@ class _HomeScreenState extends ConsumerState {
   }
 }
 
-Widget bookItem(ReturnBook book) {
+Widget actionButton(VoidCallback onPressed, String label, IconData icon,
+    TextStyle style, Color iconColor) {
+  return SizedBox(
+    height: 50,
+    child: ElevatedButton.icon(
+        style: ElevatedButton.styleFrom(
+            padding: EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+                side: BorderSide(color: Colors.black))),
+        onPressed: onPressed,
+        icon: Icon(
+          icon,
+          color: iconColor,
+        ),
+        label: Text(label, style: style)),
+  );
+}
+
+Widget bookItemAuthor(ReturnBook book) {
   final bookImageUrl = book.imageUrl;
 
   final hasImageUrl = bookImageUrl != null && bookImageUrl.isNotEmpty;

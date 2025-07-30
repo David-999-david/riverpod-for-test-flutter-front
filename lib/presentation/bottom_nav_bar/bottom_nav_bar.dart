@@ -4,8 +4,8 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:riverpod_test/presentation/user/user_home/user_home.dart';
 import 'package:riverpod_test/presentation/bottom_nav_bar/state/nav_provider.dart';
 import 'package:riverpod_test/presentation/filter/filter.dart';
-import 'package:riverpod_test/presentation/home/home_screen.dart';
-import 'package:riverpod_test/presentation/home/state/book_provider.dart';
+import 'package:riverpod_test/presentation/author/home/home_screen.dart';
+import 'package:riverpod_test/presentation/author/home/state/book_provider.dart';
 import 'package:riverpod_test/presentation/search_screen/search.dart';
 import 'package:riverpod_test/presentation/setting/setting.dart';
 import 'package:riverpod_test/presentation/setting/state/user_provider.dart';
@@ -50,7 +50,7 @@ class _BottomNavBarState extends ConsumerState<BottomNavBar> {
             ref.read(navProvider.notifier).setIndex(value);
             if (value == 0 && user.role.first.toLowerCase() == 'author') {
               if (user.role.first.toLowerCase() == 'author') {
-                ref.read(bookfetchProvider.notifier).fetchAll();
+                ref.read(bookfetchProvider(6).notifier).fetchAll();
               }
             }
           },

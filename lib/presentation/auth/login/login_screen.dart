@@ -7,7 +7,7 @@ import 'package:riverpod_test/presentation/auth/forgotpassword/email_verify/emai
 import 'package:riverpod_test/presentation/auth/login/state/login_provider.dart';
 import 'package:riverpod_test/presentation/auth/register/register_screen.dart';
 import 'package:riverpod_test/presentation/bottom_nav_bar/bottom_nav_bar.dart';
-import 'package:riverpod_test/presentation/home/home_screen.dart';
+import 'package:riverpod_test/presentation/author/home/home_screen.dart';
 import 'package:riverpod_test/presentation/setting/state/user_provider.dart';
 import 'package:riverpod_test/theme/app_text_style.dart';
 
