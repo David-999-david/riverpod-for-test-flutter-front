@@ -4,6 +4,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:riverpod_test/data/book/model/book_model.dart';
 import 'package:riverpod_test/main.dart';
 import 'package:riverpod_test/presentation/author/all_book/view_all_book.dart';
+import 'package:riverpod_test/presentation/author/book_chapter/book_chapter.dart';
 import 'package:riverpod_test/presentation/author/home/add/create_book.dart';
 import 'package:riverpod_test/presentation/author/home/state/book_provider.dart';
 import 'package:riverpod_test/presentation/setting/state/user_provider.dart';
@@ -132,7 +133,11 @@ class _HomeScreenState extends ConsumerState {
                       sliver: SliverGrid(
                           delegate: SliverChildBuilderDelegate(
                               childCount: book.length, (context, index) {
-                            return bookItemAuthor(book[index]);
+                            return bookItemAuthor(book[index], () {
+                              appnavigator.push(BookChapter(
+                                book: book[index],
+                              ));
+                            });
                           }),
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
@@ -176,7 +181,7 @@ Widget actionButton(VoidCallback onPressed, String label, IconData icon,
   );
 }
 
-Widget bookItemAuthor(ReturnBook book) {
+Widget bookItemAuthor(ReturnBook book, VoidCallback onTap) {
   final bookImageUrl = book.imageUrl;
 
   final hasImageUrl = bookImageUrl != null && bookImageUrl.isNotEmpty;
@@ -190,67 +195,70 @@ Widget bookItemAuthor(ReturnBook book) {
           'assets/images/cool4.png',
           fit: BoxFit.cover,
         );
-  return Container(
-    decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: Colors.black)),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        SizedBox(
-          height: 170,
-          width: double.infinity,
-          child: Stack(
-            fit: StackFit.expand,
-            children: [
-              bg,
-              DecoratedBox(
-                  decoration: BoxDecoration(
-                      gradient: LinearGradient(colors: [
-                Color(0xffBABABD).withOpacity(0.2),
-                Color(0xffC39CA4).withOpacity(0.1)
-              ], begin: Alignment.topCenter, end: Alignment.bottomCenter)))
-            ],
+  return GestureDetector(
+    onTap: onTap,
+    child: Container(
+      decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: Colors.black)),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          SizedBox(
+            height: 170,
+            width: double.infinity,
+            child: Stack(
+              fit: StackFit.expand,
+              children: [
+                bg,
+                DecoratedBox(
+                    decoration: BoxDecoration(
+                        gradient: LinearGradient(colors: [
+                  Color(0xffBABABD).withOpacity(0.2),
+                  Color(0xffC39CA4).withOpacity(0.1)
+                ], begin: Alignment.topCenter, end: Alignment.bottomCenter)))
+              ],
+            ),
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(
-            left: 8,
-            bottom: 10,
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                book.bookName,
-                softWrap: true,
-                overflow: TextOverflow.ellipsis,
-                style: 15.sp(),
-              ),
-              SizedBox(
-                height: 4,
-              ),
-              Text(
-                book.bookDesc,
-                softWrap: true,
-                overflow: TextOverflow.ellipsis,
-                style: 13.sp(),
-              ),
-              SizedBox(
-                height: 2,
-              ),
-              Text(
-                book.formatedDate,
-                style: 13.sp(color: Colors.grey),
-              )
-            ],
-          ),
-        )
-      ],
+          Padding(
+            padding: const EdgeInsets.only(
+              left: 8,
+              bottom: 10,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  book.bookName,
+                  softWrap: true,
+                  overflow: TextOverflow.ellipsis,
+                  style: 15.sp(),
+                ),
+                SizedBox(
+                  height: 4,
+                ),
+                Text(
+                  book.bookDesc,
+                  softWrap: true,
+                  overflow: TextOverflow.ellipsis,
+                  style: 13.sp(),
+                ),
+                SizedBox(
+                  height: 2,
+                ),
+                Text(
+                  book.formatedDate,
+                  style: 13.sp(color: Colors.grey),
+                )
+              ],
+            ),
+          )
+        ],
+      ),
     ),
   );
 }

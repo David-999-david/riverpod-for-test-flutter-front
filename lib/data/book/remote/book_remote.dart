@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:riverpod_test/api_url.dart';
 import 'package:riverpod_test/data/book/model/book_model.dart';
 import 'package:riverpod_test/data/book/model/category_sub_category.dart';
+import 'package:riverpod_test/data/book/model/chapter_model.dart';
 import 'package:riverpod_test/dio_client.dart';
 
 class BookRemote {
@@ -60,6 +61,27 @@ class BookRemote {
       } else {
         throw Exception(
             'Error => status=$status , message : ${response.data['message']}');
+      }
+    } on DioException catch (e) {
+      throw Exception('${e.response!.data['message']}');
+    }
+  }
+
+  Future<ReturnChapterModel> createChapter(
+      int bookId, InsertChapterModel chapter) async {
+    try {
+      final response =
+          await _dio.post(ApiUrl.createChapter(bookId), data: chapter.toJson());
+
+      final status = response.statusCode!;
+
+      if (status >= 200 && status < 300) {
+        final data = response.data['data'] as Map<String, dynamic>;
+
+        return ReturnChapterModel.fromJson(data);
+      } else {
+        throw Exception(
+            'Error => status=$status, message : ${response.data['message']}');
       }
     } on DioException catch (e) {
       throw Exception('${e.response!.data['message']}');

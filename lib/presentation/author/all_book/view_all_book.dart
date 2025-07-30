@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:riverpod_test/main.dart';
+import 'package:riverpod_test/presentation/author/book_chapter/book_chapter.dart';
 import 'package:riverpod_test/presentation/author/home/home_screen.dart';
 import 'package:riverpod_test/presentation/author/home/state/book_provider.dart';
 import 'package:riverpod_test/theme/app_text_style.dart';
@@ -39,7 +41,11 @@ class _ViewAllBookState extends ConsumerState<ViewAllBook> {
                           mainAxisExtent: 240),
                       itemBuilder: (context, index) {
                         final book = books[index];
-                        return bookItemAuthor(book);
+                        return bookItemAuthor(book, () {
+                          appnavigator.push(BookChapter(
+                            book: books[index],
+                          ));
+                        });
                       },
                     )
                   : Center(

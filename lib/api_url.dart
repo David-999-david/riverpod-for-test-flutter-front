@@ -32,4 +32,7 @@ class ApiUrl {
   static const getBooksByAuthor = '/user/getBooksByAuthor';
 
   static const getAllCateSubCate = '/author/allCateSubCate';
+
+  static String createChapter(int bookId) =>
+      '/author/books/$bookId/createNewChapter';
 }
