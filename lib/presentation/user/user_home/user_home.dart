@@ -11,13 +11,11 @@ class UserHome extends ConsumerWidget {
   const UserHome({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final fetchAuthorState = ref.watch(authorListProvider);
-    final authorList = fetchAuthorState.value;
+    // final fetchAuthorState = ref.watch(authorListProvider);
+    // final authorList = fetchAuthorState.value;
 
-    final bookAuthorState = ref.watch(bookAuthorListProvier);
-    final pageWithbookList = bookAuthorState.value;
-
-    final bookAuthorList = pageWithbookList?.books;
+    // final bookAuthorState = ref.watch(bookAuthorListProvier);
+    // final bookAuthorList = bookAuthorState.value;
 
     return Scaffold(
         backgroundColor: Color.fromARGB(255, 209, 209, 211),
@@ -25,67 +23,78 @@ class UserHome extends ConsumerWidget {
           child: Column(
             children: [
               Container(
-                color: Colors.white,
-                width: double.infinity,
-                height: 80,
-                child: fetchAuthorState.isLoading
-                    ? SpinKitDualRing(
+                  color: Colors.white,
+                  width: double.infinity,
+                  height: 80,
+                  child: ref.watch(authorListProvider).when(data: (authors) {
+                    if (authors.isNotEmpty) {
+                      return ListView.separated(
+                        separatorBuilder: (context, index) {
+                          return SizedBox(
+                            width: 10,
+                          );
+                        },
+                        scrollDirection: Axis.horizontal,
+                        itemCount: authors.length,
+                        itemBuilder: (context, index) {
+                          final author = authors[index];
+                          return authorCircle(author);
+                        },
+                      );
+                    }
+                    return Text('No author at current');
+                  }, error: (error, _) {
+                    return Center(
+                      child: Text(error.toString()),
+                    );
+                  }, loading: () {
+                    return Center(
+                      child: SpinKitDualRing(
                         color: Colors.yellow,
                         size: 20,
-                      )
-                    : authorList != null && authorList.isNotEmpty
-                        ? ListView.separated(
-                            separatorBuilder: (context, index) {
-                              return SizedBox(
-                                width: 10,
-                              );
-                            },
-                            scrollDirection: Axis.horizontal,
-                            itemCount: authorList.length,
-                            itemBuilder: (context, index) {
-                              final author = authorList[index];
-                              return authorCircle(author);
-                            },
-                          )
-                        : Text(
-                            'There is no authors for show',
-                            style: 14.sp(),
-                          ),
-              ),
+                      ),
+                    );
+                  })),
               SizedBox(
                 height: 10,
               ),
               Expanded(
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 5),
-                  child: bookAuthorState.isLoading
-                      ? Center(
-                          child: SpinKitDualRing(
-                            color: Colors.yellow,
-                            size: 25,
-                          ),
-                        )
-                      : bookAuthorList != null && bookAuthorList.isNotEmpty
-                          ? GridView.builder(
-                              gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 2,
-                                      crossAxisSpacing: 7,
-                                      mainAxisSpacing: 10,
-                                      mainAxisExtent: 280),
-                              itemCount: bookAuthorList.length,
-                              itemBuilder: (context, index) {
-                                final book = bookAuthorList[index];
-                                return bookItem(book);
-                              },
-                            )
-                          : Center(
-                              child: Text(
-                                'Nothing for show....',
-                                style: 14.sp(),
-                              ),
-                            ),
-                ),
+                    padding: EdgeInsets.symmetric(horizontal: 5),
+                    child: ref.watch(bookAuthorListProvier).when(data: (books) {
+                      if (books.isNotEmpty) {
+                        return GridView.builder(
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  crossAxisSpacing: 7,
+                                  mainAxisSpacing: 10,
+                                  mainAxisExtent: 280),
+                          itemCount: books.length,
+                          itemBuilder: (context, index) {
+                            final book = books[index];
+                            return bookItem(book);
+                          },
+                        );
+                      }
+                      return Center(
+                        child: Text(
+                          'Nothing for show....',
+                          style: 14.sp(),
+                        ),
+                      );
+                    }, error: (error, _) {
+                      return Center(
+                        child: Text(error.toString()),
+                      );
+                    }, loading: () {
+                      return Center(
+                        child: SpinKitDualRing(
+                          color: Colors.yellow,
+                          size: 25,
+                        ),
+                      );
+                    })),
               )
             ],
           ),

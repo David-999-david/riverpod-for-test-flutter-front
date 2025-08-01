@@ -9,7 +9,6 @@ import 'package:riverpod_test/local.dart';
 import 'package:riverpod_test/main.dart';
 import 'package:riverpod_test/presentation/auth/login/login_screen.dart';
 import 'package:riverpod_test/presentation/bottom_nav_bar/bottom_nav_bar.dart';
-import 'package:riverpod_test/presentation/author/home/add/create_book.dart';
 
 class AuthRemote {
   final Dio _dio = DioClient.dio;
@@ -78,6 +77,16 @@ class AuthRemote {
   }
 
   Future<void> handleStartScreen() async {
+    String? testsqflite = await storage.read(key: Local.testsqflite);
+
+    if (testsqflite == 'true') {
+      appnavigator.pushReplacement(BottomNavBar(), null);
+      return;
+    }
+
+    print(
+        'Refresh token is expired and there is no local sqflite data for shown');
+
     String? refresh = await storage.read(key: Local.refreshToken);
 
     if (isJwtExpired(refresh)) {

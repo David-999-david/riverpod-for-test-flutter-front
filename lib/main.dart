@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_test/app_navigator.dart';
+import 'package:riverpod_test/database/database_helper.dart';
 import 'package:riverpod_test/dio_client.dart';
 import 'package:riverpod_test/presentation/user/user_home/user_home.dart';
 import 'package:riverpod_test/presentation/auth/forgotpassword/email_verify/email_verified_screen.dart';
@@ -17,6 +18,7 @@ import 'package:riverpod_test/presentation/setting/setting.dart';
 import 'package:riverpod_test/presentation/splash_screen/splash_screen.dart';
 import 'package:riverpod_test/routes/routes.dart';
 import 'package:riverpod_test/theme/app_theme.dart';
+import 'package:sqflite/sqflite.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 final appnavigator = AppNavigator();
@@ -24,6 +26,10 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
  
   await DioClient.init();
+
+  await DatabaseHelper.instance.db;
+
+  Sqflite.getDebugModeOn();
 
   await dotenv.load(fileName: ".env");
 
