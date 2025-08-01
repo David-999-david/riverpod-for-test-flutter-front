@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 class InsertChapterModel {
   final double chapter;
   final String title;
@@ -30,6 +32,9 @@ class ReturnChapterModel {
       required this.content,
       required this.createdAt,
       required this.status});
+
+  String numFormat(double chapterNum) =>
+      NumberFormat('#.##').format(chapterNum);
 
   factory ReturnChapterModel.fromJson(Map<String, dynamic> json) {
     return ReturnChapterModel(

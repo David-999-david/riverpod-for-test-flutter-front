@@ -1,6 +1,9 @@
 class ApiUrl {
   static const baseUrl = 'http://127.0.0.1:3000/api';
 
+
+  // static const baseUrl = 'http://10.0.2.2:3000/api';
+
   static const register = '/auth/register';
 
   static const refresh = '/auth/refresh';
@@ -35,4 +38,10 @@ class ApiUrl {
 
   static String createChapter(int bookId) =>
       '/author/books/$bookId/createNewChapter';
+
+  static String getAllChapters(int bookId) =>
+      '/author/books/$bookId/getAllChapters';
+
+  static String changeBookImage(int bookId) =>
+      "/author/books/$bookId/changeImage";
 }

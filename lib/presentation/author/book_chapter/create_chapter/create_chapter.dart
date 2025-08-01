@@ -38,6 +38,10 @@ class _CreateChapterState extends ConsumerState<CreateChapter> {
             ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text('Create Chapter success!')));
 
+            ref
+                .read(getAllChapterProvider(widget.bookId).notifier)
+                .getAllChapters();
+
             appnavigator.pop();
           },
           error: (error, _) {

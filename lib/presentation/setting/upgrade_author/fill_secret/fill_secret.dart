@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:riverpod_test/main.dart';
 import 'package:riverpod_test/presentation/auth/login/state/login_provider.dart';
-import 'package:riverpod_test/presentation/auth/register/register_screen.dart';
 import 'package:riverpod_test/presentation/setting/upgrade_author/check_otp/author_otp_verify.dart';
 import 'package:riverpod_test/presentation/setting/upgrade_author/fill_secret/state/secret_check_provider.dart';
 import 'package:riverpod_test/theme/app_text_style.dart';

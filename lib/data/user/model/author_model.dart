@@ -75,6 +75,29 @@ class BookWithAuthor {
         categoryId: json['categoryId'] as int,
         category: json['category'] as String);
   }
+
+  // Map<String, dynamic> toLocal() {
+  //   return {
+  //     'id': bookId,
+  //     'authorId': authorId,
+  //     'authorName': authorName,
+  //     'bookName': bookName,
+  //     'description': description,
+  //     'imageUrl': imageUrl,
+  //     'created_at': createdAt.millisecondsSinceEpoch
+  //   };
+  // }
+
+  // factory BookWithAuthor.fromLocal(Map<String,dynamic> map){
+  //   BookWithAuthor(
+  //     authorId: authorId, 
+  //     authorName: authorName, 
+  //     bookId: bookId, 
+  //     bookName: bookName, 
+  //     description: description, 
+  //     imageUrl: imageUrl, 
+  //     createdAt: createdAt, subCategories: subCategories, categoryId: categoryId, category: category)
+  // }
 }
 
 class ReturnSubCategory {

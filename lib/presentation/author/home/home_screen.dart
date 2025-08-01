@@ -207,7 +207,7 @@ Widget bookItemAuthor(ReturnBook book, VoidCallback onTap) {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           SizedBox(
-            height: 170,
+            height: 150,
             width: double.infinity,
             child: Stack(
               fit: StackFit.expand,

@@ -87,4 +87,42 @@ class BookRemote {
       throw Exception('${e.response!.data['message']}');
     }
   }
+
+  Future<List<ReturnChapterModel>> getAllChapters(int bookId) async {
+    try {
+      final response = await _dio.get(ApiUrl.getAllChapters(bookId));
+
+      final status = response.statusCode!;
+
+      if (status >= 200 && status < 300) {
+        final data = response.data['data'] as List<dynamic>;
+
+        return data.map((c) => ReturnChapterModel.fromJson(c)).toList();
+      } else {
+        throw Exception(
+            'Error => status=$status, message : ${response.data['message']}');
+      }
+    } on DioException catch (e) {
+      throw Exception('${e.response!.data['message']}');
+    }
+  }
+
+  Future<String> updateBookImage(int bookId, FormData form) async {
+    try {
+      final response = await _dio.put(ApiUrl.changeBookImage(bookId),
+          data: form, options: Options(contentType: 'multipart/form-data'));
+
+      final status = response.statusCode!;
+
+      if (status >= 200 && status < 300) {
+        final msg = response.data['msg'] as String;
+        return msg;
+      } else {
+        throw Exception(
+            'Error => status=$status , message : ${response.data['message']}');
+      }
+    } on DioException catch (e) {
+      throw Exception('${e.response!.data['message']}');
+    }
+  }
 }

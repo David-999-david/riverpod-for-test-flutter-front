@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:riverpod_test/data/book/model/book_model.dart';
+import 'package:riverpod_test/data/book/model/chapter_model.dart';
 import 'package:riverpod_test/main.dart';
+import 'package:riverpod_test/presentation/author/book_chapter/chang_image/change_image_dialog.dart';
 import 'package:riverpod_test/presentation/author/book_chapter/create_chapter/create_chapter.dart';
+import 'package:riverpod_test/presentation/author/book_chapter/state/book_chapter_provider.dart';
 import 'package:riverpod_test/theme/app_text_style.dart';
 
 class BookChapter extends ConsumerStatefulWidget {
@@ -30,6 +34,10 @@ class _BookChapterState extends ConsumerState<BookChapter> {
             fit: BoxFit.cover,
           );
 
+    final fetchState = ref.watch(getAllChapterProvider(widget.book.bookId));
+
+    final chapters = fetchState.value;
+
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -45,11 +53,25 @@ class _BookChapterState extends ConsumerState<BookChapter> {
                     style: OutlinedButton.styleFrom(
                         padding:
                             EdgeInsets.symmetric(horizontal: 5, vertical: 3),
-                        backgroundColor: Colors.transparent,
+                        backgroundColor: Colors.black,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8)),
                         side: BorderSide(color: Colors.black)),
-                    onPressed: () {},
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return Dialog(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20)),
+                            child: ChangeImageDialog(
+                              bookId: widget.book.bookId,
+                              imageUrl: book.imageUrl,
+                            ),
+                          );
+                        },
+                      );
+                    },
                     child: Text(
                       'Change Image',
                       style: 14.sp(color: Colors.white),
@@ -126,9 +148,68 @@ class _BookChapterState extends ConsumerState<BookChapter> {
                 ],
               ),
             ),
-          )
+          ),
+          SliverPadding(
+              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+              sliver: fetchState.isLoading
+                  ? SliverFillRemaining(
+                      child: Center(
+                        child: SpinKitDualRing(
+                          color: Colors.yellow,
+                          size: 25,
+                        ),
+                      ),
+                    )
+                  : chapters != null && chapters.isNotEmpty
+                      ? SliverList.separated(
+                          itemCount: chapters.length,
+                          separatorBuilder: (context, index) {
+                            return SizedBox(
+                              height: 12,
+                            );
+                          },
+                          itemBuilder: (context, index) {
+                            return chapter(chapters[index]);
+                          },
+                        )
+                      : SliverFillRemaining(
+                          child: Center(
+                            child: Text('There is no chapter'),
+                          ),
+                        ))
         ],
       ),
     );
   }
+}
+
+Widget chapter(ReturnChapterModel chapter) {
+  return Container(
+      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      decoration: BoxDecoration(
+          color: Colors.grey, borderRadius: BorderRadius.circular(8)),
+      child: Table(
+        columnWidths: {0: FlexColumnWidth(1), 1: FlexColumnWidth(3)},
+        children: [
+          TableRow(children: [
+            Text(
+              chapter.numFormat(chapter.chapterNum),
+              style: 14.sp(),
+            ),
+            Text(
+              chapter.title,
+              style: 14.sp(),
+            )
+          ]),
+          TableRow(children: [
+            SizedBox.shrink(),
+            Text(
+              chapter.content,
+              style: 14.sp(),
+              softWrap: true,
+              overflow: TextOverflow.ellipsis,
+            )
+          ])
+        ],
+      ));
 }
